@@ -1,0 +1,69 @@
+/*
+ * Copyright (C) 2017 Baidu, Inc. All Rights Reserved.
+ */
+apply plugin: 'com.android.application'
+apply plugin: 'com.mob.sdk'
+
+MobSDK {
+    appKey "271d407a8552a"
+    appSecret "bd79588d33f86ceb857792d2a45d5ae5"
+    SMSSDK {}
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+    defaultConfig {
+        applicationId "com.letmefold"
+        minSdkVersion 23
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    signingConfigs {
+
+        def password = "LetMeFold"
+        def alias = "key0"
+        def filePath = "/src/main/assets/LetMeFold.jks"
+
+        debug {
+            keyAlias alias
+            keyPassword password
+            storeFile file(filePath)
+            storePassword(password)
+        }
+        release {
+            keyAlias alias
+            keyPassword password
+            storeFile file(filePath)
+            storePassword(password)
+        }
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs', project(':facesdk').file('libs')
+    }
+}
+
+dependencies {
+    compile fileTree(dir: '../libs', include: ['*.jar'])
+    compile project(":facesdk")
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile project(path: ':faceplatform-ui')
+    compile 'org.jsoup:jsoup:1.8.3'
+    compile 'com.qmuiteam:qmui:1.1.7'
+    compile 'com.google.zxing:core:3.3.3'
+    compile 'com.android.support.constraint:constraint-layout:1.1.3'
+    compile 'com.alibaba:fastjson:1.2.47'
+    compile 'com.sina.weibo.sdk:core:4.3.6:openDefaultRelease@aar'
+}

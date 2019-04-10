@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@android:color/white"
+        tools:context="com.letmefold.activity.TypeActivity">
+
+    <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:textColor="@color/qmui_btn_blue_text"
+            android:layout_below="@id/iv_logo"
+            android:layout_margin="48dp"
+            android:layout_centerInParent="true"
+            android:text="选择您的身份"/>
+
+    <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+            android:id="@+id/seller"
+            app:qmui_is_circle="true"
+            android:contentDescription="seller"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:layout_above="@id/text"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/seller"/>
+
+    <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+            android:id="@+id/buyer"
+            app:qmui_is_circle="true"
+            android:contentDescription="buyer"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:layout_below="@id/text"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/buyer"/>
+
+</RelativeLayout>

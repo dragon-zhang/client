@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2017 Baidu, Inc. All Rights Reserved.
+  -->
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@android:color/background_light"
+        android:orientation="vertical">
+
+    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            android:id="@+id/login_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="登录"
+            app:qmui_isRadiusAdjustBounds="true"/>
+
+    <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+            android:id="@+id/logo"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            app:qmui_is_circle="true"
+            android:contentDescription="LOGO"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:src="@drawable/logo_round"/>
+
+    <RelativeLayout
+            android:id="@+id/pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_above="@id/login_in"
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp">
+
+        <EditText
+                android:id="@+id/pwd_edit"
+                android:hint="请输入密码"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:theme="@style/MyEditText"
+                android:maxLength="20"
+                android:textSize="14sp"/>
+
+        <TextView
+                android:id="@+id/forget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/pwd_edit"
+                android:layout_alignBaseline="@id/pwd_edit"
+                android:layout_centerVertical="true"
+                android:text="| 忘记密码"
+                android:textSize="12sp"/>
+
+        <CheckBox
+                android:id="@+id/show_password"
+                android:contentDescription="是否显示密码"
+                android:layout_width="19dp"
+                android:layout_height="12dp"
+                android:layout_toStartOf="@id/forget"
+                android:layout_alignBottom="@id/forget"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="2dp"
+                android:checked="false"
+                android:layout_centerVertical="true"
+                android:background="@drawable/show_pwd_checkbox"
+                android:button="@null"/>
+    </RelativeLayout>
+    <RelativeLayout
+            android:id="@+id/acc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp"
+            android:layout_above="@id/pwd">
+
+        <EditText
+                android:id="@+id/acc_edit"
+                android:hint="邮箱/手机号"
+                android:inputType="number"
+                android:theme="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:maxLength="20"
+                android:textSize="14sp"/>
+
+        <TextView
+                android:id="@+id/face_login_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/acc_edit"
+                android:layout_centerVertical="true"
+                android:text="| 人脸登录"
+                android:textSize="12sp"/>
+
+        <TextView
+                android:id="@+id/sms_login_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/face_login_btn"
+                android:layout_marginEnd="5dp"
+                android:text="短信登录"
+                android:textSize="12sp"/>
+    </RelativeLayout>
+
+    <TextView
+            android:id="@+id/reg_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/login_in"
+            android:layout_below="@id/login_in"
+            android:layout_marginStart="5dp"
+            android:text="普通注册"
+            android:textSize="14sp"/>
+
+    <TextView
+            android:id="@+id/face_reg_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/login_in"
+            android:layout_below="@id/login_in"
+            android:layout_marginEnd="5dp"
+            android:text="人脸注册"
+            android:textSize="14sp"/>
+
+    <TextView
+            android:id="@+id/qq_text"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="240dp"
+            android:layout_alignStart="@id/login_in"
+            android:layout_marginStart="35dp"
+            android:gravity="center"
+            android:text="QQ"
+            android:textSize="10sp"/>
+
+    <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+            android:id="@+id/qq"
+            android:clickable="true"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignStart="@id/qq_text"
+            android:layout_above="@id/qq_text"
+            android:src="@drawable/qq"
+            app:qmui_border_color="?attr/qmui_config_color_gray_6"
+            app:qmui_border_width="1px"
+            app:qmui_is_circle="true"
+            app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
+            app:qmui_selected_border_width="1px"
+            app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8"/>
+
+    <TextView
+            android:id="@+id/sina_text"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="240dp"
+            android:layout_alignEnd="@id/login_in"
+            android:layout_marginEnd="35dp"
+            android:gravity="center"
+            android:text="新浪微博"
+            android:textSize="10sp"/>
+
+    <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+            android:id="@+id/sina"
+            android:clickable="true"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignStart="@id/sina_text"
+            android:layout_above="@id/sina_text"
+            android:src="@drawable/sinaweibo"
+            app:qmui_border_color="?attr/qmui_config_color_gray_6"
+            app:qmui_border_width="1px"
+            app:qmui_is_circle="true"
+            app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
+            app:qmui_selected_border_width="1px"
+            app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8"/>
+
+    <TextView
+            android:id="@+id/test_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:textSize="30sp"/>
+</RelativeLayout>
+

@@ -1,0 +1,6 @@
+<resources>
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@android:color/darker_gray</item>
+        <item name="colorControlActivated">@color/qmui_btn_blue_text</item>
+    </style>
+</resources>

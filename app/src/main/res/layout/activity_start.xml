@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        tools:context="com.letmefold.activity.StartActivity">
+
+    <ImageView
+            android:id="@+id/iv_logo"
+            android:contentDescription="LOGO"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:layout_marginTop="200dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/logo_round"/>
+
+    <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:textColor="@color/qmui_btn_blue_text"
+            android:layout_below="@id/iv_logo"
+            android:layout_margin="10dp"
+            android:layout_centerHorizontal="true"
+            android:text="随处购"/>
+
+    <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@android:color/holo_orange_light"
+            android:layout_below="@id/name"
+            android:layout_centerHorizontal="true"
+            android:text="员工福利的好帮手"/>
+
+</RelativeLayout>
