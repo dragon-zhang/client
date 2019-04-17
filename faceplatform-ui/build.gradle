@@ -2,8 +2,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
-
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 25
@@ -19,6 +17,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(path: ':faceplatform')
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api project(path: ':faceplatform')
 }

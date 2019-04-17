@@ -5,9 +5,10 @@ buildscript {
         jcenter() { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'http://maven.google.com/' }
         maven { url "http://dl.bintray.com/thelasterstar/maven/" }
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.android.tools.build:gradle:3.1.0'
         // 注册MobSDK
         classpath "com.mob.sdk:MobSDK:2018.0319.1724"
         // NOTE: Do not place your application dependencies here; they belong
