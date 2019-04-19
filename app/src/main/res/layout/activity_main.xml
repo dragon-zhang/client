@@ -5,21 +5,56 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/background_light">
-    <TextView
-            android:id="@+id/scan"
-            android:layout_width="wrap_content"
+    <RelativeLayout
+            android:id="@+id/top"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="10dp"
-            android:text="扫一扫"
-            android:textSize="14sp"/>
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="17dp">
+        <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+                android:id="@+id/scan"
+                android:clickable="true"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/scan"
+                app:qmui_border_color="?attr/qmui_config_color_gray_6"
+                app:qmui_border_width="1px"
+                app:qmui_is_circle="true"
+                app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
+                app:qmui_selected_border_width="1px"
+                app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8"/>
+        <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_toEndOf="@id/scan">
+            <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
+                    android:id="@+id/option"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"/>
+        </HorizontalScrollView>
+        <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+                android:id="@+id/user"
+                android:clickable="true"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/user"
+                app:qmui_border_color="?attr/qmui_config_color_gray_6"
+                app:qmui_border_width="1px"
+                app:qmui_is_circle="true"
+                app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
+                app:qmui_selected_border_width="1px"
+                app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8"/>
+    </RelativeLayout>
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@id/scan"
-            android:gravity="center"
+            android:layout_below="@+id/top"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
         <TextView
                 android:layout_width="wrap_content"

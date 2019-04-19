@@ -133,13 +133,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
-                                Looper.prepare();
                                 JSONObject user = JSON.parseObject(response.body());
                                 if (user != null) {
                                     gotoMain(user);
                                     Toast.makeText(LoginActivity.this, "sina登录成功", Toast.LENGTH_SHORT).show();
                                 }
-                                Looper.loop();
                             }
 
                             @Override
@@ -348,13 +346,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
-                                    Looper.prepare();
                                     JSONObject user = JSON.parseObject(response.body());
                                     if (user != null) {
                                         gotoMain(user);
                                         Toast.makeText(LoginActivity.this, "qq登录成功", Toast.LENGTH_SHORT).show();
                                     }
-                                    Looper.loop();
                                 }
 
                                 @Override
@@ -461,16 +457,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void sinaLogin() {
-        if (mAccessToken.isSessionValid()) {
+        if (!mAccessToken.isSessionValid()) {
             //token过期，重新登录
             /*创建微博实例，注意：SsoHandler 仅当 SDK 支持 SSO 时有效*/
             mSsoHandler = new SsoHandler(LoginActivity.this);
             //SSO授权,如果手机安装了微博客户端则使用客户端授权,没有则进行网页授权
-            mSsoHandler.authorize(new SelfWbAuthListener(LoginActivity.this));
+            mSsoHandler.authorize(new SelfWbAuthListener(LoginActivity.this, mHandler));
         } else {
             // 从 SharedPreferences 中读取上次已保存好 AccessToken 等信息
             mAccessToken = AccessTokenKeeper.readAccessToken(this);
+            HttpUtil.initSinaUserInfoAndLogin(mHandler);
         }
-        HttpUtil.initSinaUserInfoAndLogin(mHandler);
     }
 }

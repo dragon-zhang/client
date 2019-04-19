@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
@@ -24,6 +25,7 @@ import com.letmefold.utils.BarCodeUtil;
 import com.letmefold.utils.QRCodeUtil;
 import com.letmefold.utils.Util;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
+import com.qmuiteam.qmui.widget.QMUIWrapContentListView;
 import com.zxing.activity.CaptureActivity;
 
 import static com.mob.MobSDK.getContext;
@@ -35,10 +37,11 @@ import static com.mob.MobSDK.getContext;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private long exitTime;
-    private TextView scan;
+    private QMUIRadiusImageView scan;
     private QMUIRadiusImageView qrCode;
     private TextView result;
     private QMUIRadiusImageView barCode;
+    private QMUIWrapContentListView option;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findView();
         addListener();
+        addAdapter();
         Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.logo_square);
         try {
             qrCode.setImageBitmap(QRCodeUtil.createQRCodeBitmapWithImage("哈哈哈", 300, 300, "2",
@@ -68,15 +72,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void addAdapter() {
+        //假数据
+        String[] data = {"aa", "bb", "cc", "dd", "aa", "bb", "cc", "dd", "aa", "bb", "cc", "dd", "aa", "bb", "cc", "dd"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data);
+        option.setAdapter(adapter);
+    }
+
     private void addListener() {
         scan.setOnClickListener(this);
     }
 
     private void findView() {
         qrCode = (QMUIRadiusImageView) findViewById(R.id.qr_code);
-        scan = (TextView) findViewById(R.id.scan);
+        scan = (QMUIRadiusImageView) findViewById(R.id.scan);
         result = (TextView) findViewById(R.id.qr_result);
         barCode = (QMUIRadiusImageView) findViewById(R.id.bar_code);
+        option = (QMUIWrapContentListView) findViewById(R.id.option);
     }
 
     @Override

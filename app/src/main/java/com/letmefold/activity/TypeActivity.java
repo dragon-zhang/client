@@ -3,7 +3,6 @@ package com.letmefold.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -62,7 +61,6 @@ public class TypeActivity extends AppCompatActivity implements View.OnClickListe
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        Looper.prepare();
                         JSONObject user = JSON.parseObject(response.body());
                         if (user != null) {
                             Toast.makeText(TypeActivity.this, "身份设置成功,您现在的身份是:" + user.getString("type"), Toast.LENGTH_SHORT).show();
@@ -71,7 +69,6 @@ public class TypeActivity extends AppCompatActivity implements View.OnClickListe
                             startActivity(intent);
                             finish();
                         }
-                        Looper.loop();
                     }
 
                     @Override
