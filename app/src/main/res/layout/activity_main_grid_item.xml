@@ -4,15 +4,17 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:descendantFocusability="blocksDescendants">
 
     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
             android:id="@+id/item"
             android:layout_width="75dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:gravity="center"
             android:textSize="12sp"
             android:theme="@style/Theme_NoTitle"
+            android:clickable="false"
             android:text="分类分类"/>
 
 </LinearLayout>

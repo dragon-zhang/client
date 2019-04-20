@@ -23,13 +23,13 @@ import com.letmefold.R;
 import com.letmefold.utils.BarCodeUtil;
 import com.letmefold.utils.QRCodeUtil;
 import com.letmefold.utils.Util;
+import com.letmefold.view.MyGridPopup;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
+import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.zxing.activity.CaptureActivity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.mob.MobSDK.getContext;
 
@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView result;
     private QMUIRadiusImageView barCode;
     private GridView option;
+
+    private MyGridPopup myGridPopup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +114,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void addListener() {
         scan.setOnClickListener(this);
+        option.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, "分类 " + (position + 1), Toast.LENGTH_SHORT).show();
+                initListPopupIfNeed();
+                myGridPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                myGridPopup.setPreferredDirection(QMUIPopup.DIRECTION_BOTTOM);
+                myGridPopup.setPositionOffsetYWhenBottom(-60);
+                myGridPopup.show(view);
+            }
+        });
+    }
+
+    private void initListPopupIfNeed() {
+        if (myGridPopup == null) {
+            String[] listItems = new String[]{"Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
+            List<String> data = new ArrayList<>();
+            Collections.addAll(data, listItems);
+            ArrayAdapter adapter = new ArrayAdapter<>(MainActivity.this, R.layout.activity_main_simple_grid_item, data);
+            myGridPopup = new MyGridPopup(MainActivity.this, QMUIPopup.DIRECTION_NONE, adapter);
+            myGridPopup.create(QMUIDisplayHelper.dp2px(MainActivity.this, 250), QMUIDisplayHelper.dp2px(MainActivity.this, 200), new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Toast.makeText(MainActivity.this, "Item " + (i + 1), Toast.LENGTH_SHORT).show();
+                    myGridPopup.dismiss();
+                }
+            });
+        }
     }
 
     private void findView() {
