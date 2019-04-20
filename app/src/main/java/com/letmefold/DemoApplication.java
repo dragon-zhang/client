@@ -53,10 +53,6 @@ public class DemoApplication extends Application {
     private void initLib() {
         //初始化MobSDK
         MobSDK.init(this);
-        //初始化腾讯QQ的SDK
-        if (mTencent == null) {
-            mTencent = Tencent.createInstance(mAppid, this);
-        }
         //初始化微博SDK
         WbSdk.install(this, new AuthInfo(this, Config.WB_APP_KEY, Config.WB_REDIRECT_URL, Config.WB_SCOPE));
         mAccessToken = new Oauth2AccessToken();
@@ -67,6 +63,10 @@ public class DemoApplication extends Application {
         // assets目录下License文件名
         FaceSDKManager.getInstance().init(this, Config.licenseID, Config.licenseFileName);
         setFaceTrackerConfig();
+        //初始化腾讯QQ的SDK
+        if (mTencent == null) {
+            mTencent = Tencent.createInstance(mAppid, this);
+        }
     }
 
     private void setFaceTrackerConfig() {

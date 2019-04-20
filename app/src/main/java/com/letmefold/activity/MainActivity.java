@@ -1,6 +1,7 @@
 package com.letmefold.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,9 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.zxing.WriterException;
@@ -25,8 +24,12 @@ import com.letmefold.utils.BarCodeUtil;
 import com.letmefold.utils.QRCodeUtil;
 import com.letmefold.utils.Util;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
-import com.qmuiteam.qmui.widget.QMUIWrapContentListView;
 import com.zxing.activity.CaptureActivity;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.mob.MobSDK.getContext;
 
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private QMUIRadiusImageView qrCode;
     private TextView result;
     private QMUIRadiusImageView barCode;
-    private QMUIWrapContentListView option;
+    private GridView option;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +77,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void addAdapter() {
         //假数据
-        String[] data = {"aa", "bb", "cc", "dd", "aa", "bb", "cc", "dd", "aa", "bb", "cc", "dd", "aa", "bb", "cc", "dd"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data);
+        String[] items = {"分类1", "分类2", "分类分类", "分类4", "分类5", "分类6", "分类7", "分类8", "分类9", "分类10"};
+        List<Map<String, Object>> data = new ArrayList<>();
+        for (String item : items) {
+            Map<String, Object> map = new HashMap<>(1);
+            map.put("item", item);
+            data.add(map);
+        }
+        SimpleAdapter adapter = new SimpleAdapter(MainActivity.this, data,
+                R.layout.activity_main_grid_item,
+                new String[]{"item"},
+                new int[]{R.id.item});
+
+        // item宽度
+        int itemWidth = dip2px(this, 75);
+        // item之间的间隔
+        int itemPaddingH = dip2px(this, 5);
+        int size = items.length;
+        // 计算GridView宽度
+        int gridviewWidth = size * (itemWidth + itemPaddingH);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                gridviewWidth, LinearLayout.LayoutParams.FILL_PARENT);
+        option.setLayoutParams(params);
+        option.setColumnWidth(itemWidth);
+        option.setHorizontalSpacing(itemPaddingH);
+        option.setNumColumns(size);
         option.setAdapter(adapter);
+    }
+
+    private int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 
     private void addListener() {
@@ -88,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         scan = (QMUIRadiusImageView) findViewById(R.id.scan);
         result = (TextView) findViewById(R.id.qr_result);
         barCode = (QMUIRadiusImageView) findViewById(R.id.bar_code);
-        option = (QMUIWrapContentListView) findViewById(R.id.option);
+        option = (GridView) findViewById(R.id.option);
     }
 
     @Override
