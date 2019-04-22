@@ -76,11 +76,33 @@
                 android:name=".activity.LoginActivity"
                 android:screenOrientation="portrait"/>
         <activity
-                android:name=".activity.FaceRegActivity"
-                android:screenOrientation="portrait"/>
-        <activity
                 android:name=".activity.TypeActivity"
                 android:theme="@style/QMUI.Compat.NoActionBar"/>
+        <activity
+                android:name=".activity.RegActivity"/>
+        <activity
+                android:name=".activity.SmsLoginActivity"/>
+        <activity
+                android:name=".activity.MainActivity"/>
+        <activity
+                android:name=".activity.user.CardIssueActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".activity.user.CommodityShelvesActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".activity.user.StoreRegisterActivity"
+                android:screenOrientation="portrait"/>
+        <!-- 活体图像采集界面 -->
+        <activity
+                android:name=".activity.FaceLivenessExpActivity"
+                android:hardwareAccelerated="true"
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+                android:name=".activity.FaceRegActivity"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name=".activity.DetectLoginActivity"
                 android:screenOrientation="portrait"
@@ -91,19 +113,7 @@
         <activity
                 android:name=".activity.FaceDetectActivity"
                 android:screenOrientation="portrait"/>
-        <!-- 活体图像采集界面 -->
-        <activity
-                android:name=".activity.FaceLivenessExpActivity"
-                android:hardwareAccelerated="true"
-                android:launchMode="singleTop"
-                android:screenOrientation="portrait"
-                android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity
-                android:name=".activity.RegActivity"/>
-        <activity
-                android:name=".activity.SmsLoginActivity"/>
-        <activity
-                android:name=".activity.MainActivity"/>
+        <!-- 二维码扫描界面 -->
         <activity
                 android:name="com.zxing.activity.CaptureActivity"/>
         <!-- SMS -->

@@ -28,7 +28,7 @@
                 app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8"/>
         <HorizontalScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginStart="17dp"
                 android:layout_marginEnd="17dp"
                 android:layout_alignBaseline="@id/scan"

@@ -2,6 +2,7 @@ package com.letmefold.activity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -20,12 +21,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.zxing.WriterException;
 import com.letmefold.Config;
 import com.letmefold.R;
+import com.letmefold.activity.user.CardIssueActivity;
+import com.letmefold.activity.user.CommodityShelvesActivity;
+import com.letmefold.activity.user.StoreRegisterActivity;
 import com.letmefold.utils.BarCodeUtil;
 import com.letmefold.utils.QRCodeUtil;
 import com.letmefold.utils.Util;
 import com.letmefold.view.MyGridPopup;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.zxing.activity.CaptureActivity;
 
@@ -45,8 +50,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView result;
     private QMUIRadiusImageView barCode;
     private GridView option;
+    private QMUIRadiusImageView user;
 
     private MyGridPopup myGridPopup;
+
+    private JSONObject userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +63,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Util.immersion(this, Color.WHITE, true);
 
         String json = getIntent().getStringExtra("user");
-        JSONObject user = JSON.parseObject(json);
-        if (user.getString("type") == null) {
+        userInfo = JSON.parseObject(json);
+        if (userInfo.getString("type") == null) {
             Intent intent = new Intent(MainActivity.this, TypeActivity.class);
-            intent.putExtra("user", user.toJSONString());
+            intent.putExtra("user", userInfo.toJSONString());
             startActivity(intent);
         }
-
         findView();
         addListener();
         addAdapter();
@@ -99,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 计算GridView宽度
         int gridviewWidth = size * (itemWidth + itemPaddingH);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                gridviewWidth, LinearLayout.LayoutParams.FILL_PARENT);
+                gridviewWidth, LinearLayout.LayoutParams.MATCH_PARENT);
         option.setLayoutParams(params);
         option.setColumnWidth(itemWidth);
         option.setHorizontalSpacing(itemPaddingH);
@@ -114,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void addListener() {
         scan.setOnClickListener(this);
+        user.setOnClickListener(this);
         option.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -150,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         result = (TextView) findViewById(R.id.qr_result);
         barCode = (QMUIRadiusImageView) findViewById(R.id.bar_code);
         option = (GridView) findViewById(R.id.option);
+        user = (QMUIRadiusImageView) findViewById(R.id.user);
     }
 
     @Override
@@ -163,6 +172,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
                 startActivityForResult(intent, Config.REQ_QR_CODE);
             }
+        } else if (user == v) {
+            String[] items = new String[]{"重选身份"};
+            if ("seller".equals(userInfo.getString("type"))) {
+                List<String> list = new ArrayList<>(Arrays.asList(items));
+                list.addAll(Arrays.asList("实体店登记", "商品上架", "会员卡发行"));
+                items = list.toArray(new String[]{});
+            }
+            new QMUIDialog.MenuDialogBuilder(MainActivity.this)
+                    .addItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = null;
+                            switch (which) {
+                                case 0:
+                                    intent = new Intent(MainActivity.this, TypeActivity.class);
+                                    break;
+                                case 1:
+                                    intent = new Intent(MainActivity.this, StoreRegisterActivity.class);
+                                    break;
+                                case 2:
+                                    intent = new Intent(MainActivity.this, CommodityShelvesActivity.class);
+                                    break;
+                                case 3:
+                                    intent = new Intent(MainActivity.this, CardIssueActivity.class);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if (intent != null) {
+                                intent.putExtra("user", userInfo.toJSONString());
+                                startActivity(intent);
+                            }
+                            dialog.dismiss();
+                        }
+                    })
+                    .create(R.style.QMUI_Dialog).show();
         }
     }
 

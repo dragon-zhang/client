@@ -28,6 +28,16 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/seller"/>
 
+    <TextView
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="@color/result_view"
+            android:layout_below="@id/seller"
+            android:layout_alignStart="@id/seller"
+            android:text="卖家"/>
+
     <com.qmuiteam.qmui.widget.QMUIRadiusImageView
             android:id="@+id/buyer"
             app:qmui_is_circle="true"
@@ -37,5 +47,15 @@
             android:layout_below="@id/text"
             android:layout_centerHorizontal="true"
             android:src="@drawable/buyer"/>
+
+    <TextView
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="@color/result_view"
+            android:layout_below="@id/buyer"
+            android:layout_alignStart="@id/buyer"
+            android:text="买家"/>
 
 </RelativeLayout>
