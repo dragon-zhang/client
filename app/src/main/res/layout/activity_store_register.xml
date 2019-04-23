@@ -3,6 +3,66 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@android:color/background_light">
-
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+        <EditText
+                android:id="@+id/sname_edit"
+                android:hint="店铺名称"
+                android:inputType="textPersonName"
+                android:theme="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:maxLength="100"
+                android:textSize="14sp"/>
+        <EditText
+                android:id="@+id/location_edit"
+                android:hint="店铺地点"
+                android:inputType="numberDecimal"
+                android:theme="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:maxLength="200"
+                android:textSize="14sp"/>
+        <EditText
+                android:id="@+id/scope_edit"
+                android:hint="经营范围"
+                android:inputType="numberDecimal"
+                android:theme="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:maxLength="600"
+                android:textSize="14sp"/>
+        <EditText
+                android:id="@+id/size_edit"
+                android:hint="店铺大小/㎡"
+                android:inputType="numberDecimal"
+                android:theme="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="10"
+                android:textSize="14sp"/>
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                android:id="@+id/sure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="确认注册"
+                app:qmui_isRadiusAdjustBounds="true"/>
+    </LinearLayout>
 </RelativeLayout>

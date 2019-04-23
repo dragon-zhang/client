@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:descendantFocusability="blocksDescendants">
+
+    <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:textSize="12sp"
+            android:text="名称"/>
+
+    <TextView
+            android:id="@+id/brand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:textSize="12sp"
+            android:text="品牌"/>
+
+    <TextView
+            android:id="@+id/msrp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:textSize="12sp"
+            android:text="建议零售价"/>
+
+    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:theme="@style/Theme_NoTitle"
+            android:clickable="false"
+            android:textSize="12sp"
+            android:text="删除"/>
+
+</LinearLayout>

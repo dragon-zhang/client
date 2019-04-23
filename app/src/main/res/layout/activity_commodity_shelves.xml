@@ -1,8 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/background_light">
-
+    <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+            android:id="@+id/scan"
+            android:clickable="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/on_shelves"
+            app:qmui_border_color="?attr/qmui_config_color_gray_6"
+            app:qmui_border_width="1px"
+            app:qmui_is_circle="true"
+            app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
+            app:qmui_selected_border_width="1px"
+            app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8"/>
+    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            android:id="@+id/sure"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignTop="@id/scan"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="15dp"
+            android:gravity="center"
+            android:singleLine="false"
+            android:textSize="12sp"
+            app:qmui_isRadiusAdjustBounds="true"/>
+    <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_below="@id/scan"
+            android:layout_toEndOf="@id/scan"
+            android:layout_toStartOf="@id/sure"
+            android:scrollbars="none">
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+            <com.qmuiteam.qmui.widget.QMUIWrapContentListView
+                    android:id="@+id/list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+            </com.qmuiteam.qmui.widget.QMUIWrapContentListView>
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
