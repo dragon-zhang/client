@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addAdapter();
         Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.logo_square);
         try {
-            qrCode.setImageBitmap(QRCodeUtil.createQRCodeBitmapWithImage("哈哈哈", 300, 300, "2",
+            qrCode.setImageBitmap(QRCodeUtil.createQRCodeBitmapWithImage("123", 300, 300, "2",
                     "utf-8", "H",
                     bitmap, 60));
             barCode.setImageBitmap(BarCodeUtil.createBarCodeBitmap("012345678912", 320, 80, true));

@@ -70,26 +70,6 @@
             android:layout_below="@+id/top"
             android:gravity="center_horizontal"
             android:orientation="vertical">
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="*@_@*"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="您已经成功着陆"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="(^_^)∠※"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="开始愉快的购物之旅吧"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="我的二维码ID↓"/>
         <com.qmuiteam.qmui.widget.QMUIRadiusImageView
                 android:id="@+id/qr_code"
                 android:clickable="true"
@@ -106,7 +86,7 @@
                 android:id="@+id/qr_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="二维码扫描结果"/>
+                android:text="扫描结果"/>
         <com.qmuiteam.qmui.widget.QMUIRadiusImageView
                 android:id="@+id/bar_code"
                 android:clickable="true"
@@ -119,10 +99,5 @@
                 app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
                 app:qmui_selected_border_width="1px"
                 app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8"/>
-        <TextView
-                android:id="@+id/bar_result"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="条形码扫描结果"/>
     </LinearLayout>
 </RelativeLayout>
