@@ -1,7 +1,6 @@
 package com.letmefold.activity.user;
 
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -48,26 +47,24 @@ public class StoreRegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Map<String, Object> map = new HashMap<>(5);
                 //user_id,店铺名sname，店铺地点localtion,店铺大小size/㎡,经营范围scope
-                map.put("userId", userInfo.get("user_id"));
+                map.put("userId", userInfo.get("id"));
                 map.put("sname", snameEdit.getText().toString());
                 map.put("location", locationEdit.getText().toString());
                 map.put("scope", scopeEdit.getText().toString());
                 map.put("size", sizeEdit.getText().toString());
 
                 JSONObject json = new JSONObject(map);
-                //todo 接口未完成
-                OkGo.<String>post("http://" + IP_AND_PORT + "/rest/v1/")
+                OkGo.<String>post("http://" + IP_AND_PORT + "/rest/v1/store/create")
                         .tag(this)
                         .upJson(json.toJSONString())
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(com.okgo.model.Response<String> response) {
-                                Looper.prepare();
-                                JSONObject user = JSON.parseObject(response.body());
-                                if (user != null) {
+                                JSONObject result = JSON.parseObject(response.body());
+                                if ("OK".equals(result.getString("msg"))) {
                                     Toast.makeText(StoreRegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                                    StoreRegisterActivity.this.finish();
                                 }
-                                Looper.loop();
                             }
 
                             @Override
