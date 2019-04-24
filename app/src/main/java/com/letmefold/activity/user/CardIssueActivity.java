@@ -1,7 +1,6 @@
 package com.letmefold.activity.user;
 
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -52,23 +51,21 @@ public class CardIssueActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Map<String, Object> map = new HashMap<>(5);
                 //user_id,发行版本issue_version,发行卡等级grade(数组，如"金","银","铜")
-                map.put("userId", userInfo.get("user_id"));
-                map.put("version", versionEdit.getText().toString());
+                map.put("userId", userInfo.get("id"));
+                map.put("issueVersion", versionEdit.getText().toString());
                 map.put("grade", gradeEdit.getText().toString());
                 JSONObject json = new JSONObject(map);
-                //todo 接口未完成
-                OkGo.<String>post("http://" + IP_AND_PORT + "/rest/v1/")
+                OkGo.<String>post("http://" + IP_AND_PORT + "/rest/v1/card/create")
                         .tag(this)
                         .upJson(json.toJSONString())
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(com.okgo.model.Response<String> response) {
-                                Looper.prepare();
-                                JSONObject user = JSON.parseObject(response.body());
-                                if (user != null) {
+                                JSONObject result = JSON.parseObject(response.body());
+                                if ("OK".equals(result.getString("msg"))) {
                                     Toast.makeText(CardIssueActivity.this, "发行成功", Toast.LENGTH_SHORT).show();
+                                    CardIssueActivity.this.finish();
                                 }
-                                Looper.loop();
                             }
 
                             @Override
