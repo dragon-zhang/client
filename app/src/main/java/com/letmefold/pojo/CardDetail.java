@@ -26,7 +26,7 @@ public class CardDetail {
     private String userId;
 
     /**
-     * 用户名
+     * 发行人人名
      */
     private String name;
 
@@ -53,11 +53,18 @@ public class CardDetail {
     /**
      * 店铺地点
      */
-    private String localtion;
+    private String location;
 
     /**
      * 经营范围
      */
     private String scope;
+
+    public Card toCard() {
+        Card card = new Card();
+        card.setIssueVersion(this.getIssueVersion());
+        card.setGrade(this.getGrade());
+        return card;
+    }
 
 }

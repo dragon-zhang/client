@@ -24,18 +24,27 @@ import com.letmefold.R;
 import com.letmefold.activity.user.CardIssueActivity;
 import com.letmefold.activity.user.CommodityShelvesActivity;
 import com.letmefold.activity.user.StoreRegisterActivity;
+import com.letmefold.pojo.Card;
+import com.letmefold.pojo.CardDetail;
+import com.letmefold.pojo.Store;
 import com.letmefold.utils.BarCodeUtil;
 import com.letmefold.utils.QRCodeUtil;
 import com.letmefold.utils.Util;
 import com.letmefold.view.MyGridPopup;
+import com.okgo.OkGo;
+import com.okgo.callback.StringCallback;
+import com.okgo.model.Response;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
+import com.qmuiteam.qmui.widget.QMUIWrapContentListView;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.zxing.activity.CaptureActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.letmefold.Config.IP_AND_PORT;
 import static com.mob.MobSDK.getContext;
 
 /**
@@ -51,10 +60,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private QMUIRadiusImageView barCode;
     private GridView option;
     private QMUIRadiusImageView user;
+    private QMUIWrapContentListView listView;
 
     private MyGridPopup myGridPopup;
 
     private JSONObject userInfo;
+    private List<Store> stores;
+    private List<Card> cards;
+    private List<CardDetail> cardDetails;
+
+    private Map<String, String> params = new HashMap<>(5);
+    private Set<String> locations = new HashSet<>();
+    private Set<String> snames = new HashSet<>();
+    private Set<String> scopes = new HashSet<>();
+    private Set<String> versions = new HashSet<>();
+    private Set<String> grades = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +92,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findView();
         addListener();
         addAdapter();
-        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.logo_square);
+        initData();
         try {
+            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.logo_square);
             qrCode.setImageBitmap(QRCodeUtil.createQRCodeBitmapWithImage("123", 300, 300, "2",
                     "utf-8", "H",
                     bitmap, 60));
@@ -81,12 +102,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (WriterException e) {
             e.printStackTrace();
         }
+    }
 
+    private void initData() {
+        //请求所有商店的数据
+        getStores(null, null, null);
     }
 
     private void addAdapter() {
-        //假数据
-        String[] items = {"分类1", "分类2", "分类分类", "分类4", "分类5", "分类6", "分类7", "分类8", "分类9", "分类10"};
+        String[] items = {"地点", "店名", "经营范围", "发行版本", "卡等级"};
         List<Map<String, Object>> data = new ArrayList<>();
         for (String item : items) {
             Map<String, Object> map = new HashMap<>(1);
@@ -125,31 +149,164 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         option.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "分类 " + (position + 1), Toast.LENGTH_SHORT).show();
-                initListPopupIfNeed();
-                myGridPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-                myGridPopup.setPreferredDirection(QMUIPopup.DIRECTION_BOTTOM);
-                myGridPopup.setPositionOffsetYWhenBottom(-60);
-                myGridPopup.show(view);
+                initListPopupIfNeed(position, view);
             }
         });
     }
 
-    private void initListPopupIfNeed() {
-        if (myGridPopup == null) {
-            String[] listItems = new String[]{"Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
-            List<String> data = new ArrayList<>();
-            Collections.addAll(data, listItems);
-            ArrayAdapter adapter = new ArrayAdapter<>(MainActivity.this, R.layout.activity_main_simple_grid_item, data);
-            myGridPopup = new MyGridPopup(MainActivity.this, QMUIPopup.DIRECTION_NONE, adapter);
-            myGridPopup.create(QMUIDisplayHelper.dp2px(MainActivity.this, 250), QMUIDisplayHelper.dp2px(MainActivity.this, 200), new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Toast.makeText(MainActivity.this, "Item " + (i + 1), Toast.LENGTH_SHORT).show();
-                    myGridPopup.dismiss();
+    private void initListPopupIfNeed(int position, View view) {
+        switch (position) {
+            case 0:
+                //地点
+                for (Store store : Objects.requireNonNull(stores)) {
+                    locations.add(store.getLocation());
                 }
-            });
+                createGridPopup(locations, position);
+                break;
+            case 1:
+                //店名
+                for (Store store : Objects.requireNonNull(stores)) {
+                    snames.add(store.getSname());
+                }
+                createGridPopup(snames, position);
+                break;
+            case 2:
+                //经营范围
+                for (Store store : Objects.requireNonNull(stores)) {
+                    scopes.add(store.getScope());
+                }
+                createGridPopup(scopes, position);
+                break;
+            case 3:
+                //发行版本
+                for (Card card : Objects.requireNonNull(cards)) {
+                    versions.add(card.getIssueVersion());
+                }
+                createGridPopup(versions, position);
+                break;
+            case 4:
+                //卡等级
+                for (Card card : Objects.requireNonNull(cards)) {
+                    grades.add(card.getGrade());
+                }
+                createGridPopup(grades, position);
+                break;
+            default:
+                break;
         }
+        myGridPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+        myGridPopup.setPreferredDirection(QMUIPopup.DIRECTION_BOTTOM);
+        myGridPopup.setPositionOffsetYWhenBottom(-60);
+        myGridPopup.show(view);
+    }
+
+    private void createGridPopup(Set<String> setData, final int position) {
+        final List<String> data = new ArrayList<>(setData);
+        ArrayAdapter adapter = new ArrayAdapter<>(MainActivity.this, R.layout.activity_main_simple_grid_item, data);
+        myGridPopup = new MyGridPopup(MainActivity.this, QMUIPopup.DIRECTION_NONE, adapter);
+        myGridPopup.create(QMUIDisplayHelper.dp2px(MainActivity.this, 250), QMUIDisplayHelper.dp2px(MainActivity.this, 200), new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String param = data.get(i);
+                Toast.makeText(MainActivity.this, param, Toast.LENGTH_SHORT).show();
+                switch (position) {
+                    case 0:
+                        params.put("location", param);
+                        break;
+                    case 1:
+                        params.put("sname", param);
+                        break;
+                    case 2:
+                        params.put("scope", param);
+                        break;
+                    case 3:
+                        params.put("version", param);
+                        break;
+                    case 4:
+                        params.put("grade", param);
+                        break;
+                    default:
+                        break;
+                }
+                if (position < 3) {
+                    getStores(params.get("location"), params.get("sname"), params.get("scope"));
+                } else {
+                    getCards(params.get("version"), params.get("grade"));
+                }
+                getCardDetails(params.get("location"), params.get("sname"), params.get("scope"), params.get("version"), params.get("grade"));
+                myGridPopup.dismiss();
+            }
+        });
+    }
+
+    private void getCardDetails(String location, String sname, String scope, String version, String grade) {
+        if (location == null) {
+            location = "";
+        }
+        if (sname == null) {
+            sname = "";
+        }
+        if (scope == null) {
+            scope = "";
+        }
+        if (version == null) {
+            version = "";
+        }
+        if (grade == null) {
+            grade = "";
+        }
+        OkGo.<String>get("http://" + IP_AND_PORT + "/rest/v1/card/fuzzy?" +
+                "&location=" + location +
+                "&sname=" + sname +
+                "&scope=" + scope +
+                "&version=" + version +
+                "&grade=" + grade)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(com.okgo.model.Response<String> response) {
+                        String result = response.body();
+                        if (result == null || "".equals(result)) {
+                            Toast.makeText(MainActivity.this, "没有任何发行卡信息", Toast.LENGTH_SHORT).show();
+                            MainActivity.this.finish();
+                        }
+                        JSONObject json = JSON.parseObject(result);
+                        if ("OK".equals(json.getString("msg"))) {
+                            cardDetails = JSONObject.parseArray(json.getString("data"), CardDetail.class);
+
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
+                            List<Map<String, Object>> data = new ArrayList<>(cardDetails.size());
+                            for (CardDetail detail : cardDetails) {
+                                Map<String, Object> map = new HashMap<>(6);
+                                map.put("sname", detail.getSname());
+                                map.put("location", detail.getLocation());
+                                map.put("scope", detail.getScope());
+                                map.put("version", detail.getIssueVersion());
+                                map.put("grade", detail.getGrade());
+                                map.put("time", sdf.format(detail.getIssueTime()));
+                                data.add(map);
+                            }
+                            SimpleAdapter adapter = new SimpleAdapter(MainActivity.this, data,
+                                    R.layout.activity_main_list_item,
+                                    new String[]{"sname", "location", "scope", "version", "grade", "time"},
+                                    new int[]{R.id.sname, R.id.location, R.id.scope, R.id.version, R.id.grade, R.id.time});
+                            listView.setAdapter(adapter);
+
+                            if (cards == null) {
+                                cards = new ArrayList<>();
+                                for (CardDetail detail : Objects.requireNonNull(cardDetails)) {
+                                    cards.add(detail.toCard());
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        JSONObject jsonObject = JSON.parseObject(response.body());
+                        Toast.makeText(MainActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void findView() {
@@ -159,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         barCode = (QMUIRadiusImageView) findViewById(R.id.bar_code);
         option = (GridView) findViewById(R.id.option);
         user = (QMUIRadiusImageView) findViewById(R.id.user);
+        listView = (QMUIWrapContentListView) findViewById(R.id.cards);
     }
 
     @Override
@@ -242,6 +400,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(MainActivity.this, "请至权限中心打开本应用的相机访问权限", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void getCards(String version, String grade) {
+        if (version == null) {
+            version = "";
+        }
+        if (grade == null) {
+            grade = "";
+        }
+        //请求符合条件的卡的数据
+        OkGo.<String>get("http://" + IP_AND_PORT + "/rest/v1/card/all?version=" + version + "&grade=" + grade)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(com.okgo.model.Response<String> response) {
+                        String result = response.body();
+                        if (result == null || "".equals(result)) {
+                            Toast.makeText(MainActivity.this, "没有任何发行卡信息", Toast.LENGTH_SHORT).show();
+                            MainActivity.this.finish();
+                        }
+                        cards = JSONObject.parseArray(result, Card.class);
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        JSONObject jsonObject = JSON.parseObject(response.body());
+                        Toast.makeText(MainActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void getStores(String location, String sname, String scope) {
+        if (location == null) {
+            location = "";
+        }
+        if (sname == null) {
+            sname = "";
+        }
+        if (scope == null) {
+            scope = "";
+        }
+        //请求符合条件的卡的数据
+        OkGo.<String>get("http://" + IP_AND_PORT + "/rest/v1/store/all?location=" + location + "&sname=" + sname + "&scope=" + scope)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(com.okgo.model.Response<String> response) {
+                        String result = response.body();
+                        if (result == null || "".equals(result)) {
+                            Toast.makeText(MainActivity.this, "没有任何商店信息", Toast.LENGTH_SHORT).show();
+                            MainActivity.this.finish();
+                        }
+                        stores = JSONObject.parseArray(result, Store.class);
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        JSONObject jsonObject = JSON.parseObject(response.body());
+                        Toast.makeText(MainActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     /**

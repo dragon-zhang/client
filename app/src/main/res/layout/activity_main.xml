@@ -62,12 +62,24 @@
                 app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
                 app:qmui_selected_border_width="1px"
                 app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8"/>
+        <HorizontalScrollView
+                android:layout_toEndOf="@id/scan"
+                android:layout_toStartOf="@id/user"
+                android:layout_below="@id/scan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+            <com.qmuiteam.qmui.widget.QMUIWrapContentListView
+                    android:id="@+id/cards"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </HorizontalScrollView>
     </RelativeLayout>
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/top"
+            android:layout_below="@id/top"
             android:gravity="center_horizontal"
             android:orientation="vertical">
         <com.qmuiteam.qmui.widget.QMUIRadiusImageView
