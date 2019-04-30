@@ -239,9 +239,10 @@ public class FaceRegActivity extends AppCompatActivity implements View.OnClickLi
 
                         @Override
                         public void onSuccess(Response<String> response) {
-                            Log.i("FaceRegActivity", "orientation->" + response.body());
-                            toast("注册成功！");
-                            finish();
+                            JSONObject user = JSON.parseObject(response.body());
+                            Intent intent = new Intent(FaceRegActivity.this, MainActivity.class);
+                            intent.putExtra("user", user.toJSONString());
+                            startActivity(intent);
                         }
 
                         @Override

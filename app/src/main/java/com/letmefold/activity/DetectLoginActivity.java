@@ -14,7 +14,6 @@ import android.graphics.RectF;
 import android.os.*;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -26,8 +25,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.baidu.aip.FaceSDKManager;
 import com.baidu.aip.ImageFrame;
@@ -35,10 +32,8 @@ import com.baidu.aip.face.*;
 import com.baidu.aip.face.camera.ICameraControl;
 import com.baidu.aip.face.camera.PermissionCallback;
 import com.baidu.idl.facesdk.FaceInfo;
-import com.letmefold.Config;
 import com.letmefold.R;
 import com.letmefold.exception.FaceErrorException;
-import com.letmefold.pojo.User;
 import com.letmefold.utils.ImageSaveUtil;
 import com.letmefold.utils.ImageUtil;
 import com.letmefold.widget.BrightnessTools;
@@ -54,8 +49,6 @@ import com.okgo.request.base.Request;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import static com.letmefold.Config.IP_AND_PORT;
@@ -447,9 +440,8 @@ public class DetectLoginActivity extends AppCompatActivity {
                 ImageSaveUtil.saveCameraBitmap(DetectLoginActivity.this, face, "head_tmp.jpg");
 
                 String base64Img = new String(Base64.encode(readFile(file), Base64.NO_WRAP));
-                Map<String, Object> map = new HashMap<>(1);
-                map.put("base64Img", base64Img);
-                JSONObject json = new JSONObject(map);
+                JSONObject json = new JSONObject();
+                json.put("base64Img", base64Img);
                 OkGo.<String>post("http://" + IP_AND_PORT + "/rest/v1/user/login/face")
                         .tag(this)
                         .upJson(json.toJSONString())
@@ -474,54 +466,11 @@ public class DetectLoginActivity extends AppCompatActivity {
                                     return;
                                 }
 
-                                String res = response.body();
-                                Log.d("DetectLoginActivity", "res is:" + res);
-                                double maxScore = 0;
-                                String userId = "";
-                                String userInfo = "";
-                                User user = new User();
-                                if (TextUtils.isEmpty(res)) {
-                                    return;
-                                }
-                                try {
-                                    JSONObject resObj = JSON.parseObject(res).getJSONObject("result");
-                                    if (resObj != null) {
-                                        JSONArray resArray = resObj.getJSONArray("user_list");
-
-                                        for (Object o : resArray) {
-                                            JSONObject s = (JSONObject) o;
-                                            if (s != null) {
-                                                double score = s.getDouble("score");
-                                                if (score > maxScore) {
-                                                    maxScore = score;
-                                                    user.setFaceId(s.getString("user_id"));
-                                                    user.setFaceGroup(Config.GROUP_ID);
-                                                    userInfo = s.getString("user_info");
-                                                }
-                                            }
-                                        }
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                if (maxScore > 90) {
-                                    Log.d("DetectLoginActivity", "onResult ok");
-                                    Intent intent = new Intent(DetectLoginActivity.this, MainActivity.class);
-                                    intent.putExtra("login_success", true);
-                                    intent.putExtra("user_info", userInfo);
-                                    intent.putExtra("face_id", userId);
-                                    intent.putExtra("score", maxScore);
-                                    startActivity(intent);
-                                    finish();
-                                    return;
-                                } else {
-                                    Log.d("DetectLoginActivity", "onResult fail");
-                                    if (mDetectCount >= 3) {
-                                        Toast.makeText(DetectLoginActivity.this, "人脸校验不通过,请确认是否已注册", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                        return;
-                                    }
-                                }
+                                JSONObject user = JSON.parseObject(response.body());
+                                Intent intent = new Intent(DetectLoginActivity.this, MainActivity.class);
+                                intent.putExtra("user", user.toJSONString());
+                                startActivity(intent);
+                                DetectLoginActivity.this.finish();
                                 mUploading = false;
                             }
 
