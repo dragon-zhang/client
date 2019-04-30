@@ -210,7 +210,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //qq、微信、新浪微博LOGO均下移
         qq.measure(w, h);
         int qqHeight = qq.getMeasuredHeight();
-        float down = (screenHeight / 2f - qqHeight) * 0.6f;
+        float down = (screenHeight / 2f - qqHeight) * 0.75f;
         ObjectAnimator qqLogo = ObjectAnimator.ofFloat(qq, "translationY", 0, down);
         ObjectAnimator sinaLogo = ObjectAnimator.ofFloat(sina, "translationY", 0, down);
 
