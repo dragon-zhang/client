@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+    <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+            android:id="@+id/qr_code"
+            android:clickable="true"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/qr_code_example"
+            app:qmui_border_color="?attr/qmui_config_color_gray_6"
+            app:qmui_border_width="1px"
+            app:qmui_corner_radius="15dp"
+            app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
+            app:qmui_selected_border_width="1px"
+            app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8"/>
+    <TextView
+            android:id="@+id/qr_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="扫描结果"/>
+    <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+            android:id="@+id/bar_code"
+            android:visibility="gone"
+            android:clickable="true"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/qr_code_example"
+            app:qmui_border_color="?attr/qmui_config_color_gray_6"
+            app:qmui_border_width="1px"
+            app:qmui_corner_radius="15dp"
+            app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
+            app:qmui_selected_border_width="1px"
+            app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8"/>
+</LinearLayout>

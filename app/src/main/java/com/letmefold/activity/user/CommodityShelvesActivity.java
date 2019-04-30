@@ -9,19 +9,25 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.SimpleAdapter;
+import android.widget.AdapterView;
 import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.letmefold.Config;
 import com.letmefold.R;
+import com.letmefold.adapter.CommodityShelvesListAdapter;
+import com.letmefold.adapter.QRCodeAdapter;
 import com.letmefold.pojo.Store;
+import com.letmefold.pojo.User;
+import com.letmefold.view.MyGridPopup;
 import com.okgo.OkGo;
 import com.okgo.callback.StringCallback;
 import com.okgo.model.Response;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 import com.qmuiteam.qmui.widget.QMUIWrapContentListView;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 import com.zxing.activity.CaptureActivity;
 
@@ -40,6 +46,10 @@ public class CommodityShelvesActivity extends AppCompatActivity implements View.
 
     private QMUIWrapContentListView listView;
 
+    private MyGridPopup myGridPopup;
+
+    private CommodityShelvesListAdapter adapter;
+
     /**
      * 假数据
      */
@@ -49,7 +59,7 @@ public class CommodityShelvesActivity extends AppCompatActivity implements View.
 
     private List<Store> stores;
     private int index = -1;
-    private List<Map<String, Object>> entities = new ArrayList<>();
+    private List<Map<String, String>> entities = new ArrayList<>();
     private List<String> storeNames = new ArrayList<>();
 
     /**
@@ -57,15 +67,18 @@ public class CommodityShelvesActivity extends AppCompatActivity implements View.
      */
     private QMUIDialog dialog;
 
+    private String action;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commodity_shelves);
-        JSONObject userInfo = JSON.parseObject(getIntent().getStringExtra("user"));
+        action = getIntent().getStringExtra("action");
+        User userInfo = JSON.parseObject(getIntent().getStringExtra("user")).toJavaObject(User.class);
         findView();
         addListener();
         //扫码上货,entity的selled字段置为0
-        OkGo.<String>get("http://" + IP_AND_PORT + "/rest/v1/store/search?userId=" + userInfo.get("id"))
+        OkGo.<String>get("http://" + IP_AND_PORT + "/rest/v1/store/search?userId=" + userInfo.getId())
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
@@ -96,17 +109,16 @@ public class CommodityShelvesActivity extends AppCompatActivity implements View.
         for (int i = 0; i < names.size(); i++) {
             addEntity(i);
         }
-        SimpleAdapter adapter = new SimpleAdapter(CommodityShelvesActivity.this, entities,
+        adapter = new CommodityShelvesListAdapter(CommodityShelvesActivity.this, entities,
                 R.layout.activity_commodity_shelves_list_item,
-                new String[]{"name", "brand", "msrp"},
-                new int[]{R.id.name, R.id.brand, R.id.msrp});
-        //todo 重写一个adapter
+                new int[]{R.id.name, R.id.brand, R.id.msrp, R.id.delete}
+        );
         listView.setAdapter(adapter);
-        sure.setText("确认\n上架");
+        sure.setText(action);
     }
 
     private void addEntity(int i) {
-        Map<String, Object> map = new HashMap<>(3);
+        Map<String, String> map = new HashMap<>(3);
         map.put("name", names.get(i));
         map.put("brand", brands.get(i));
         map.put("msrp", msrps.get(i));
@@ -148,31 +160,56 @@ public class CommodityShelvesActivity extends AppCompatActivity implements View.
             }
         } else if (sure == v) {
             JSONObject json = new JSONObject();
-            if (index == -1) {
-                Toast.makeText(CommodityShelvesActivity.this, "请指定上架到哪个商店", Toast.LENGTH_SHORT).show();
-                chooseStore();
-            } else {
-                json.put("storeId", stores.get(index).getId());
-                //todo 接口未完成,上货
-                json.put("goods", "");
-                OkGo.<String>post("http://" + IP_AND_PORT + "/rest/v1/xxx")
-                        .tag(this)
-                        .upJson(json.toJSONString())
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(com.okgo.model.Response<String> response) {
-                                JSONObject body = JSON.parseObject(response.body());
-                                if (body != null) {
+            if ("确认\n上架".equals(action)) {
+                if (index == -1) {
+                    Toast.makeText(CommodityShelvesActivity.this, "请指定上架到哪个商店", Toast.LENGTH_SHORT).show();
+                    chooseStore();
+                } else {
+                    json.put("storeId", stores.get(index).getId());
+                    //todo 接口未完成,上货
+                    json.put("goods", "");
+                    OkGo.<String>post("http://" + IP_AND_PORT + "/rest/v1/xxx")
+                            .tag(this)
+                            .upJson(json.toJSONString())
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+                                    JSONObject body = JSON.parseObject(response.body());
+                                    if (body != null) {
 
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onError(Response<String> response) {
-                                JSONObject jsonObject = JSON.parseObject(response.body());
-                                Toast.makeText(CommodityShelvesActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                                @Override
+                                public void onError(Response<String> response) {
+                                    JSONObject jsonObject = JSON.parseObject(response.body());
+                                    Toast.makeText(CommodityShelvesActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            } else if ("确认\n出售".equals(action)) {
+                if (index == -1) {
+                    Toast.makeText(CommodityShelvesActivity.this, "请指定您在哪个商店出售的该商品", Toast.LENGTH_SHORT).show();
+                    chooseStore();
+                } else {
+                    QRCodeAdapter qrCodeAdapter = new QRCodeAdapter(
+                            CommodityShelvesActivity.this,
+                            adapter.getCountPrice(),
+                            R.layout.activity_commodity_shelves_qr_code,
+                            new int[]{R.id.qr_code},
+                            stores.get(index).getId());
+                    myGridPopup = new MyGridPopup(CommodityShelvesActivity.this, QMUIPopup.DIRECTION_BOTTOM, qrCodeAdapter, 1);
+                    myGridPopup.create(QMUIDisplayHelper.dp2px(CommodityShelvesActivity.this, 300),
+                            QMUIDisplayHelper.dp2px(CommodityShelvesActivity.this, 300), new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    myGridPopup.dismiss();
+                                }
+                            });
+                    myGridPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                    myGridPopup.setPreferredDirection(QMUIPopup.DIRECTION_BOTTOM);
+                    myGridPopup.show(listView);
+                }
             }
         }
     }
@@ -192,12 +229,12 @@ public class CommodityShelvesActivity extends AppCompatActivity implements View.
             brands.add("品牌" + (brands.size() + 1));
             msrps.add(scanResult);
             addEntity(names.size() - 1);
-            SimpleAdapter adapter = new SimpleAdapter(CommodityShelvesActivity.this, entities,
+            adapter = new CommodityShelvesListAdapter(CommodityShelvesActivity.this, entities,
                     R.layout.activity_commodity_shelves_list_item,
-                    new String[]{"name", "brand", "msrp"},
-                    new int[]{R.id.name, R.id.brand, R.id.msrp});
-            //todo 重写一个adapter
+                    new int[]{R.id.name, R.id.brand, R.id.msrp, R.id.delete}
+            );
             listView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
     }
 }

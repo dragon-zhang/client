@@ -17,6 +17,8 @@ public class MyGridPopup extends QMUIPopup {
 
     private BaseAdapter mAdapter;
 
+    private int numColumns;
+
     /**
      * 构造方法。
      *
@@ -24,9 +26,10 @@ public class MyGridPopup extends QMUIPopup {
      * @param direction Popup 的方向，为 {@link QMUIPopup#DIRECTION_NONE}, {@link QMUIPopup#DIRECTION_TOP} 和 {@link QMUIPopup#DIRECTION_BOTTOM} 中的其中一个值。
      * @param adapter   列表的 Adapter
      */
-    public MyGridPopup(Context context, @Direction int direction, BaseAdapter adapter) {
+    public MyGridPopup(Context context, @Direction int direction, BaseAdapter adapter, int numColumns) {
         super(context, direction);
         mAdapter = adapter;
+        this.numColumns = numColumns;
     }
 
     public void create(int width, int maxHeight, AdapterView.OnItemClickListener onItemClickListener) {
@@ -36,7 +39,7 @@ public class MyGridPopup extends QMUIPopup {
         gridView.setAdapter(mAdapter);
         gridView.setVerticalScrollBarEnabled(false);
         gridView.setOnItemClickListener(onItemClickListener);
-        gridView.setNumColumns(2);
+        gridView.setNumColumns(numColumns);
         setContentView(gridView);
     }
 }

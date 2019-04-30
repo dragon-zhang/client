@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,17 +16,15 @@ import android.view.View;
 import android.widget.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.google.zxing.WriterException;
 import com.letmefold.Config;
 import com.letmefold.R;
 import com.letmefold.activity.user.CardIssueActivity;
 import com.letmefold.activity.user.CommodityShelvesActivity;
 import com.letmefold.activity.user.StoreRegisterActivity;
+import com.letmefold.adapter.MainListAdapter;
 import com.letmefold.pojo.Card;
 import com.letmefold.pojo.CardDetail;
 import com.letmefold.pojo.Store;
-import com.letmefold.utils.BarCodeUtil;
-import com.letmefold.utils.QRCodeUtil;
 import com.letmefold.utils.Util;
 import com.letmefold.view.MyGridPopup;
 import com.okgo.OkGo;
@@ -41,11 +37,9 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.zxing.activity.CaptureActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.letmefold.Config.IP_AND_PORT;
-import static com.mob.MobSDK.getContext;
 
 /**
  * @author success zhang
@@ -55,9 +49,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private long exitTime;
     private QMUIRadiusImageView scan;
-    private QMUIRadiusImageView qrCode;
-    private TextView result;
-    private QMUIRadiusImageView barCode;
     private GridView option;
     private QMUIRadiusImageView user;
     private QMUIWrapContentListView listView;
@@ -93,20 +84,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addListener();
         addAdapter();
         initData();
-        try {
-            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.logo_square);
-            qrCode.setImageBitmap(QRCodeUtil.createQRCodeBitmapWithImage("123", 300, 300, "2",
-                    "utf-8", "H",
-                    bitmap, 60));
-            barCode.setImageBitmap(BarCodeUtil.createBarCodeBitmap("012345678912", 320, 80, true));
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
     }
 
     private void initData() {
         //请求所有商店的数据
         getStores(null, null, null);
+        //请求所有卡的数据
+        getCardDetails(null, null, null, null, null);
     }
 
     private void addAdapter() {
@@ -203,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void createGridPopup(Set<String> setData, final int position) {
         final List<String> data = new ArrayList<>(setData);
         ArrayAdapter adapter = new ArrayAdapter<>(MainActivity.this, R.layout.activity_main_simple_grid_item, data);
-        myGridPopup = new MyGridPopup(MainActivity.this, QMUIPopup.DIRECTION_NONE, adapter);
+        myGridPopup = new MyGridPopup(MainActivity.this, QMUIPopup.DIRECTION_NONE, adapter, 2);
         myGridPopup.create(QMUIDisplayHelper.dp2px(MainActivity.this, 250), QMUIDisplayHelper.dp2px(MainActivity.this, 200), new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -274,22 +258,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if ("OK".equals(json.getString("msg"))) {
                             cardDetails = JSONObject.parseArray(json.getString("data"), CardDetail.class);
 
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
-                            List<Map<String, Object>> data = new ArrayList<>(cardDetails.size());
-                            for (CardDetail detail : cardDetails) {
-                                Map<String, Object> map = new HashMap<>(6);
-                                map.put("sname", detail.getSname());
-                                map.put("location", detail.getLocation());
-                                map.put("scope", detail.getScope());
-                                map.put("version", detail.getIssueVersion());
-                                map.put("grade", detail.getGrade());
-                                map.put("time", sdf.format(detail.getIssueTime()));
-                                data.add(map);
-                            }
-                            SimpleAdapter adapter = new SimpleAdapter(MainActivity.this, data,
+                            MainListAdapter adapter = new MainListAdapter(MainActivity.this, cardDetails,
                                     R.layout.activity_main_list_item,
-                                    new String[]{"sname", "location", "scope", "version", "grade", "time"},
-                                    new int[]{R.id.sname, R.id.location, R.id.scope, R.id.version, R.id.grade, R.id.time});
+                                    new int[]{R.id.sname, R.id.location, R.id.scope, R.id.version, R.id.grade, R.id.time, R.id.lease},
+                                    userInfo.getString("id"));
                             listView.setAdapter(adapter);
 
                             if (cards == null) {
@@ -310,10 +282,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void findView() {
-        qrCode = (QMUIRadiusImageView) findViewById(R.id.qr_code);
         scan = (QMUIRadiusImageView) findViewById(R.id.scan);
-        result = (TextView) findViewById(R.id.qr_result);
-        barCode = (QMUIRadiusImageView) findViewById(R.id.bar_code);
         option = (GridView) findViewById(R.id.option);
         user = (QMUIRadiusImageView) findViewById(R.id.user);
         listView = (QMUIWrapContentListView) findViewById(R.id.cards);
@@ -334,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String[] items = new String[]{"重选身份"};
             if ("seller".equals(userInfo.getString("type"))) {
                 List<String> list = new ArrayList<>(Arrays.asList(items));
-                list.addAll(Arrays.asList("实体店登记", "商品上架", "会员卡发行"));
+                list.addAll(Arrays.asList("实体店登记", "商品出售", "会员卡发行", "商品上架"));
                 items = list.toArray(new String[]{});
             }
             new QMUIDialog.MenuDialogBuilder(MainActivity.this)
@@ -351,9 +320,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     break;
                                 case 2:
                                     intent = new Intent(MainActivity.this, CommodityShelvesActivity.class);
+                                    intent.putExtra("action", "确认\n出售");
                                     break;
                                 case 3:
                                     intent = new Intent(MainActivity.this, CardIssueActivity.class);
+                                    break;
+                                case 4:
+                                    intent = new Intent(MainActivity.this, CommodityShelvesActivity.class);
+                                    intent.putExtra("action", "确认\n上架");
                                     break;
                                 default:
                                     break;
@@ -380,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 scanResult = bundle.getString(Config.INTENT_EXTRA_KEY_QR_SCAN);
             }
             //将扫描出的信息显示出来
-            result.setText(scanResult);
+            Toast.makeText(MainActivity.this, scanResult, Toast.LENGTH_LONG).show();
         }
     }
 
