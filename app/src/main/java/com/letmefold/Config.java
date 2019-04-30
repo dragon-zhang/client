@@ -9,7 +9,14 @@ package com.letmefold;
  */
 public class Config {
 
-    public static final String IP_AND_PORT = "192.168.43.155:8088";
+    /**
+     * 开发环境
+     */
+    //public static final String IP_AND_PORT = "192.168.43.155:8088";
+    /**
+     * 正式环境
+     */
+    public static final String IP_AND_PORT = "www.huanz.xyz";
 
     public static String licenseID = "LetMeFold-face-android";
     public static String licenseFileName = "idl-license.face-android";
