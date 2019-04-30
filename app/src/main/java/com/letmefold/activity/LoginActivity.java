@@ -116,6 +116,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         && !TextUtils.isEmpty(openId)) {
                     mTencent.setAccessToken(token, expires);
                     mTencent.setOpenId(openId);
+                    qqMap.put(Constants.PARAM_ACCESS_TOKEN, token);
+                    qqMap.put(Constants.PARAM_EXPIRES_IN, expires);
+                    qqMap.put(Constants.PARAM_OPEN_ID, openId);
                 }
             } catch (Exception ignored) {
             }
