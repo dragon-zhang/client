@@ -44,7 +44,7 @@ public class DemoApplication extends Application {
         initLib();
 
         APIService.getInstance().init(this);
-        APIService.getInstance().setGroupId(Config.groupID);
+        APIService.getInstance().setGroupId(Config.GROUP_ID);
     }
 
     /**
@@ -61,7 +61,7 @@ public class DemoApplication extends Application {
         // 应用上下文
         // 申请License取得的APPID
         // assets目录下License文件名
-        FaceSDKManager.getInstance().init(this, Config.licenseID, Config.licenseFileName);
+        FaceSDKManager.getInstance().init(this, Config.LICENSE_ID, Config.LICENSE_FILE_NAME);
         setFaceTrackerConfig();
         //初始化腾讯QQ的SDK
         if (mTencent == null) {

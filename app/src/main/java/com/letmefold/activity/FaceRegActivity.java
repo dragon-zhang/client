@@ -28,9 +28,9 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baidu.aip.FaceSDKManager;
+import com.letmefold.Config;
 import com.letmefold.R;
 import com.letmefold.utils.ImageSaveUtil;
-import com.letmefold.utils.Md5;
 import com.okgo.OkGo;
 import com.okgo.callback.StringCallback;
 import com.okgo.model.Progress;
@@ -39,9 +39,6 @@ import com.okgo.request.base.Request;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 import static com.letmefold.Config.IP_AND_PORT;
 import static com.letmefold.utils.Base64RequestBody.readFile;
@@ -224,15 +221,13 @@ public class FaceRegActivity extends AppCompatActivity implements View.OnClickLi
         // 用户id（由数字、字母、下划线组成），长度限制128B
         // uid为用户的id,百度对uid不做限制和处理，应该与您的帐号系统中的用户id对应。
         String username = usernameEt.getText().toString().trim();
-        String uid = Md5.MD5(UUID.randomUUID().toString(), "utf-8");
 
         try {
             String base64Img = new String(Base64.encode(readFile(file), Base64.NO_WRAP));
-            Map<String, Object> map = new HashMap<>(1);
-            map.put("base64Img", base64Img);
-            map.put("uid", uid);
-            map.put("username", username);
-            JSONObject json = new JSONObject(map);
+            JSONObject json = new JSONObject();
+            json.put("base64Img", base64Img);
+            json.put("username", username);
+            json.put("group", Config.GROUP_ID);
             OkGo.<String>post("http://" + IP_AND_PORT + "/rest/v1/user/register/face")
                     .tag(this)
                     .upJson(json.toJSONString())

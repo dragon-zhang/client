@@ -12,18 +12,18 @@ public class Config {
     /**
      * 开发环境
      */
-    //public static final String IP_AND_PORT = "192.168.43.155:8088";
+    public static final String IP_AND_PORT = "192.168.43.155:8088";
     /**
      * 正式环境
      */
-    public static final String IP_AND_PORT = "www.huanz.xyz";
+    //public static final String IP_AND_PORT = "www.huanz.xyz";
 
-    public static String licenseID = "LetMeFold-face-android";
-    public static String licenseFileName = "idl-license.face-android";
+    public static final String LICENSE_ID = "LetMeFold-face-android";
+    public static final String LICENSE_FILE_NAME = "idl-license.face-android";
     /**
      * 每个开发者账号只能创建一个人脸库，groupID用于标识人脸库
      */
-    static String groupID = "User";
+    public static final String GROUP_ID = "User";
     /**
      * 打开扫描界面请求码
      */

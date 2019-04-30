@@ -108,9 +108,6 @@
                 android:screenOrientation="portrait"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
-                android:name=".activity.LoginResultActivity"
-                android:screenOrientation="portrait"/>
-        <activity
                 android:name=".activity.FaceDetectActivity"
                 android:screenOrientation="portrait"/>
         <!-- 二维码扫描界面 -->

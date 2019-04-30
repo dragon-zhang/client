@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.letmefold.adapter.MainListAdapter;
 import com.letmefold.pojo.Card;
 import com.letmefold.pojo.CardDetail;
 import com.letmefold.pojo.Store;
+import com.letmefold.utils.ImageSaveUtil;
 import com.letmefold.utils.Util;
 import com.letmefold.view.MyGridPopup;
 import com.okgo.OkGo;
@@ -72,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Util.immersion(this, Color.WHITE, true);
-
         String json = getIntent().getStringExtra("user");
         userInfo = JSON.parseObject(json);
         if (userInfo.getString("type") == null) {
@@ -91,6 +92,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getStores(null, null, null);
         //请求所有卡的数据
         getCardDetails(null, null, null, null, null);
+        Bitmap avatar = ImageSaveUtil.loadCameraBitmap(this, "head_tmp.jpg");
+        if (avatar != null) {
+            user.setImageBitmap(avatar);
+        }
     }
 
     private void addAdapter() {

@@ -35,8 +35,10 @@ import com.baidu.aip.face.*;
 import com.baidu.aip.face.camera.ICameraControl;
 import com.baidu.aip.face.camera.PermissionCallback;
 import com.baidu.idl.facesdk.FaceInfo;
+import com.letmefold.Config;
 import com.letmefold.R;
 import com.letmefold.exception.FaceErrorException;
+import com.letmefold.pojo.User;
 import com.letmefold.utils.ImageSaveUtil;
 import com.letmefold.utils.ImageUtil;
 import com.letmefold.widget.BrightnessTools;
@@ -477,6 +479,7 @@ public class DetectLoginActivity extends AppCompatActivity {
                                 double maxScore = 0;
                                 String userId = "";
                                 String userInfo = "";
+                                User user = new User();
                                 if (TextUtils.isEmpty(res)) {
                                     return;
                                 }
@@ -491,7 +494,8 @@ public class DetectLoginActivity extends AppCompatActivity {
                                                 double score = s.getDouble("score");
                                                 if (score > maxScore) {
                                                     maxScore = score;
-                                                    userId = s.getString("user_id");
+                                                    user.setFaceId(s.getString("user_id"));
+                                                    user.setFaceGroup(Config.GROUP_ID);
                                                     userInfo = s.getString("user_info");
                                                 }
                                             }
@@ -500,12 +504,12 @@ public class DetectLoginActivity extends AppCompatActivity {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                if (maxScore > 80) {
+                                if (maxScore > 90) {
                                     Log.d("DetectLoginActivity", "onResult ok");
-                                    Intent intent = new Intent(DetectLoginActivity.this, LoginResultActivity.class);
+                                    Intent intent = new Intent(DetectLoginActivity.this, MainActivity.class);
                                     intent.putExtra("login_success", true);
                                     intent.putExtra("user_info", userInfo);
-                                    intent.putExtra("uid", userId);
+                                    intent.putExtra("face_id", userId);
                                     intent.putExtra("score", maxScore);
                                     startActivity(intent);
                                     finish();

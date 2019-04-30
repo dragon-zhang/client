@@ -162,7 +162,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // 应用上下文
         // 申请License取得的APPID
         // assets目录下License文件名
-        FaceSDKManager.getInstance().initialize(LoginActivity.this, Config.licenseID, Config.licenseFileName, com.baidu.aip.FaceSDKManager.getInstance().getFaceTracker(this));
+        FaceSDKManager.getInstance().initialize(LoginActivity.this, Config.LICENSE_ID, Config.LICENSE_FILE_NAME, com.baidu.aip.FaceSDKManager.getInstance().getFaceTracker(this));
         setFaceConfig();
     }
 
