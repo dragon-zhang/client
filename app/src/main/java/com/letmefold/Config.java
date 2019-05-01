@@ -12,11 +12,11 @@ public class Config {
     /**
      * 开发环境
      */
-    public static final String IP_AND_PORT = "192.168.43.155:8088";
+    //public static final String IP_AND_PORT = "192.168.43.155:8088";
     /**
      * 正式环境
      */
-    //public static final String IP_AND_PORT = "www.huanz.xyz";
+    public static final String IP_AND_PORT = "www.huanz.xyz";
 
     public static final String LICENSE_ID = "LetMeFold-face-android";
     public static final String LICENSE_FILE_NAME = "idl-license.face-android";
