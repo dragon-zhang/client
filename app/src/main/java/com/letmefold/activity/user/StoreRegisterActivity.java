@@ -1,5 +1,6 @@
 package com.letmefold.activity.user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -63,6 +64,8 @@ public class StoreRegisterActivity extends AppCompatActivity {
                                 JSONObject result = JSON.parseObject(response.body());
                                 if ("OK".equals(result.getString("msg"))) {
                                     Toast.makeText(StoreRegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                                    Intent resultIntent = new Intent();
+                                    StoreRegisterActivity.this.setResult(RESULT_OK, resultIntent);
                                     StoreRegisterActivity.this.finish();
                                 }
                             }

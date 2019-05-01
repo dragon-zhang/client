@@ -307,7 +307,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(LoginActivity.this, FaceRegActivity.class));
         } else if (faceLoginBtn == v) {
             //实时人脸检测
-            startActivity(new Intent(LoginActivity.this, DetectLoginActivity.class));
+            Intent intent = new Intent(LoginActivity.this, DetectLoginActivity.class);
+            startActivityForResult(intent, Config.FINISH_LOGIN);
         } else if (regBtn == v) {
             Intent intent = new Intent(LoginActivity.this, RegActivity.class);
             intent.putExtra("todo", "register");
@@ -380,6 +381,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Tencent.onActivityResultData(requestCode, resultCode, data, loginListener);
         }
         super.onActivityResult(requestCode, resultCode, data);
+        //人脸识别的回调
+        if (requestCode == Config.FINISH_LOGIN && resultCode == RESULT_OK) {
+            gotoMain(JSON.parseObject(data.getStringExtra("user")));
+        }
         //SSO授权回调，发起SSO登陆的Activity必须重写onActivityResults
         if (mSsoHandler != null) {
             mSsoHandler.authorizeCallBack(requestCode, resultCode, data);

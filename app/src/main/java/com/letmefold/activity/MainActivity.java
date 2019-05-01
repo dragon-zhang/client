@@ -339,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                             if (intent != null) {
                                 intent.putExtra("user", userInfo.toJSONString());
-                                startActivity(intent);
+                                startActivityForResult(intent, Config.RE_INIT_DATA);
                             }
                             dialog.dismiss();
                         }
@@ -351,8 +351,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //扫描结果回调
         if (requestCode == Config.REQ_QR_CODE && resultCode == RESULT_OK) {
+            //扫描结果回调
             Bundle bundle = data.getExtras();
             String scanResult = null;
             if (bundle != null) {
@@ -360,6 +360,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             //将扫描出的信息显示出来
             Toast.makeText(MainActivity.this, scanResult, Toast.LENGTH_LONG).show();
+        } else if (requestCode == Config.RE_INIT_DATA && resultCode == RESULT_OK) {
+            //需要重新请求数据
+            initData();
         }
     }
 

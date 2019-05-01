@@ -467,11 +467,15 @@ public class DetectLoginActivity extends AppCompatActivity {
                                 }
 
                                 JSONObject user = JSON.parseObject(response.body());
-                                Intent intent = new Intent(DetectLoginActivity.this, MainActivity.class);
-                                intent.putExtra("user", user.toJSONString());
-                                startActivity(intent);
-                                DetectLoginActivity.this.finish();
-                                mUploading = false;
+                                if (user == null) {
+                                    Toast.makeText(DetectLoginActivity.this, "人脸校验不通过,请确认是否已注册", Toast.LENGTH_SHORT).show();
+                                    mUploading = false;
+                                } else {
+                                    Intent resultIntent = new Intent();
+                                    resultIntent.putExtra("user", user.toJSONString());
+                                    DetectLoginActivity.this.setResult(RESULT_OK, resultIntent);
+                                    DetectLoginActivity.this.finish();
+                                }
                             }
 
                             @Override

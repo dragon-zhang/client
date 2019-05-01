@@ -1,5 +1,6 @@
 package com.letmefold.activity.user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -64,6 +65,8 @@ public class CardIssueActivity extends AppCompatActivity {
                                 JSONObject result = JSON.parseObject(response.body());
                                 if ("OK".equals(result.getString("msg"))) {
                                     Toast.makeText(CardIssueActivity.this, "发行成功", Toast.LENGTH_SHORT).show();
+                                    Intent resultIntent = new Intent();
+                                    CardIssueActivity.this.setResult(RESULT_OK, resultIntent);
                                     CardIssueActivity.this.finish();
                                 }
                             }

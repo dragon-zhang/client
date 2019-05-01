@@ -34,6 +34,16 @@ public class Config {
     public static final int REQ_PERM_CAMERA = 11003;
     public static final String INTENT_EXTRA_KEY_QR_SCAN = "qr_scan_result";
 
+    /**
+     * 重新请求数据
+     */
+    public static final int RE_INIT_DATA = 11012;
+
+    /**
+     * 完成登录
+     */
+    public static final int FINISH_LOGIN = 11022;
+
     //微博配置
     /**
      * 当前应用的APP_KEY，第三方应用应该使用在新浪开放平台申请的APP_KEY，只有通过微博官方认证的APP_KEY才能生效
