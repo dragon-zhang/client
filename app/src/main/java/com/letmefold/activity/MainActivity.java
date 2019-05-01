@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private GridView option;
     private QMUIRadiusImageView user;
     private QMUIWrapContentListView listView;
-
+    private LinearLayout titleLayout;
     private MyGridPopup myGridPopup;
 
     private JSONObject userInfo;
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void createGridPopup(Set<String> setData, final int position) {
         final List<String> data = new ArrayList<>(setData);
-        ArrayAdapter adapter = new ArrayAdapter<>(MainActivity.this, R.layout.activity_main_simple_grid_item, data);
+        ArrayAdapter adapter = new ArrayAdapter<>(MainActivity.this, R.layout.simple_text_item, data);
         myGridPopup = new MyGridPopup(MainActivity.this, QMUIPopup.DIRECTION_NONE, adapter, 2);
         myGridPopup.create(QMUIDisplayHelper.dp2px(MainActivity.this, 250), QMUIDisplayHelper.dp2px(MainActivity.this, 200), new AdapterView.OnItemClickListener() {
             @Override
@@ -273,7 +273,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             MainListAdapter adapter = new MainListAdapter(MainActivity.this, cardDetails,
                                     R.layout.activity_main_list_item,
                                     new int[]{R.id.sname, R.id.location, R.id.scope, R.id.version, R.id.grade, R.id.time, R.id.lease},
-                                    userInfo.getString("id"));
+                                    userInfo.getString("id"),
+                                    titleLayout,
+                                    new String[]{"店铺名称", "店铺位置", "经营范围", "发行版本", "卡等级", "发行时间"});
                             listView.setAdapter(adapter);
 
                             if (cards == null) {
@@ -298,6 +300,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         option = (GridView) findViewById(R.id.option);
         user = (QMUIRadiusImageView) findViewById(R.id.user);
         listView = (QMUIWrapContentListView) findViewById(R.id.cards);
+        titleLayout = (LinearLayout) findViewById(R.id.titleLayout);
     }
 
     @Override

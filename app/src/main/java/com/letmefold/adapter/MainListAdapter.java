@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.letmefold.R;
 import com.letmefold.pojo.CardDetail;
 import com.letmefold.pojo.LeasedCard;
 import com.okgo.OkGo;
@@ -37,17 +39,29 @@ public class MainListAdapter extends BaseAdapter implements View.OnClickListener
     private String userId;
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
     private int index = -1;
+    private int mColumnNum;
 
     public MainListAdapter(Context mContext,
                            List<CardDetail> data,
                            @LayoutRes int resource,
                            @IdRes int[] to,
-                           String userId) {
+                           String userId,
+                           LinearLayout titleLayout,
+                           String[] titles) {
         this.mContext = mContext;
         this.data = data;
         this.mResource = resource;
         this.mTo = to;
         this.userId = userId;
+        mColumnNum = titles.length;
+        for (int i = 0; i < mColumnNum; i++) {
+            View titleView = LayoutInflater.from(mContext).inflate(R.layout.simple_text_item, null);
+            TextView title = (TextView) titleView.findViewById(R.id.text);
+            title.setText(titles[i]);
+            titleLayout.addView(titleView,
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+        }
     }
 
     /**

@@ -3,66 +3,98 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="start"
+        android:gravity="start|center_vertical"
         android:orientation="horizontal"
         android:descendantFocusability="blocksDescendants">
 
     <TextView
             android:id="@+id/sname"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
+            android:layout_weight="4"
+            android:gravity="center_vertical"
+            android:paddingLeft="?attr/qmui_content_padding_horizontal"
+            android:paddingRight="?attr/qmui_content_padding_horizontal"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:background="?attr/qmui_s_list_item_bg_with_border_bottom_inset_left"
             android:textSize="12sp"
             android:text="店铺名"/>
 
     <TextView
             android:id="@+id/location"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
+            android:layout_weight="4"
+            android:gravity="center_vertical"
+            android:paddingLeft="?attr/qmui_content_padding_horizontal"
+            android:paddingRight="?attr/qmui_content_padding_horizontal"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:background="?attr/qmui_s_list_item_bg_with_border_bottom_inset_left"
             android:textSize="12sp"
             android:text="店铺地点"/>
 
     <TextView
             android:id="@+id/scope"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
+            android:layout_weight="4"
+            android:gravity="center_vertical"
+            android:paddingLeft="?attr/qmui_content_padding_horizontal"
+            android:paddingRight="?attr/qmui_content_padding_horizontal"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:background="?attr/qmui_s_list_item_bg_with_border_bottom_inset_left"
             android:textSize="12sp"
             android:text="经营范围"/>
 
     <TextView
             android:id="@+id/version"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
+            android:layout_weight="4"
+            android:gravity="center_vertical"
+            android:paddingLeft="?attr/qmui_content_padding_horizontal"
+            android:paddingRight="?attr/qmui_content_padding_horizontal"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:background="?attr/qmui_s_list_item_bg_with_border_bottom_inset_left"
             android:textSize="12sp"
             android:text="发行版本"/>
 
     <TextView
             android:id="@+id/grade"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
+            android:layout_weight="3"
+            android:gravity="center_vertical"
+            android:paddingLeft="?attr/qmui_content_padding_horizontal"
+            android:paddingRight="?attr/qmui_content_padding_horizontal"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:background="?attr/qmui_s_list_item_bg_with_border_bottom_inset_left"
             android:textSize="12sp"
             android:text="发行卡等级"/>
 
     <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="?attr/qmui_content_padding_horizontal"
+            android:paddingRight="?attr/qmui_content_padding_horizontal"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:background="?attr/qmui_s_list_item_bg_with_border_bottom_inset_left"
             android:textSize="12sp"
             android:text="发行时间"/>
 
     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
             android:id="@+id/lease"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="?attr/qmui_content_padding_horizontal"
+            android:paddingRight="?attr/qmui_content_padding_horizontal"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:background="?attr/qmui_s_list_item_bg_with_border_bottom_inset_left"
             android:theme="@style/Theme_NoTitle"
             android:clickable="false"
-            android:layout_marginEnd="5dp"
             android:textSize="12sp"
             android:text="租赁"/>
 
