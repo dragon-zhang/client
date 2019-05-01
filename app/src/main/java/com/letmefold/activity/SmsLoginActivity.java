@@ -14,9 +14,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import cn.smssdk.SMSSDK;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.letmefold.R;
 import com.letmefold.sms.SmsObserver;
+import com.okgo.OkGo;
+import com.okgo.callback.StringCallback;
+import com.okgo.model.Response;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
+import static com.letmefold.Config.IP_AND_PORT;
 import static com.letmefold.utils.Util.*;
 
 /**
@@ -142,9 +150,30 @@ public class SmsLoginActivity extends AppCompatActivity implements View.OnClickL
                 SMSSDK.submitVerificationCode("86", mPhone, mCode);
             }
         } else if (login == v) {
-            Intent intent = new Intent(SmsLoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            SmsLoginActivity.this.finish();
+            OkGo.<String>post("http://" + IP_AND_PORT + "/rest/v1/user/login/sms")
+                    .tag(this)
+                    .upRequestBody(RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), mPhone))
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(com.okgo.model.Response<String> response) {
+                            JSONObject user = JSON.parseObject(response.body());
+                            if (user != null) {
+                                Intent intent = new Intent(SmsLoginActivity.this, MainActivity.class);
+                                intent.putExtra("user", user.toJSONString());
+                                startActivity(intent);
+                                SmsLoginActivity.this.finish();
+                                Toast.makeText(SmsLoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(SmsLoginActivity.this, "请先进行注册", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Response<String> response) {
+                            JSONObject jsonObject = JSON.parseObject(response.body());
+                            Toast.makeText(SmsLoginActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+                    });
         } else if (back == v) {
             Intent intent = new Intent(SmsLoginActivity.this, LoginActivity.class);
             startActivity(intent);

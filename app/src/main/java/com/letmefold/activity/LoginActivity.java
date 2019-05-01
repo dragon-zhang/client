@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -404,25 +403,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void commonLogin() {
-        Map<String, Object> map = new HashMap<>(2);
         String account = accEdit.getText().toString();
         String password = pwdEdit.getText().toString();
-        map.put("account", account);
-        map.put("password", password);
-        JSONObject json = new JSONObject(map);
+        JSONObject json = new JSONObject();
+        json.put("account", account);
+        json.put("password", password);
         OkGo.<String>post("http://" + IP_AND_PORT + "/rest/v1/user/login")
                 .tag(this)
                 .upJson(json.toJSONString())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(com.okgo.model.Response<String> response) {
-                        Looper.prepare();
                         JSONObject user = JSON.parseObject(response.body());
                         if (user != null) {
                             gotoMain(user);
                             Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                         }
-                        Looper.loop();
                     }
 
                     @Override

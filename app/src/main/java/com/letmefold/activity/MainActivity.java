@@ -84,7 +84,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findView();
         addListener();
         addAdapter();
+        initAvatar();
         initData();
+    }
+
+    private void initAvatar() {
+        String faceId = userInfo.getString("faceId");
+        if (faceId != null && !"".equals(faceId)) {
+            Bitmap avatar = ImageSaveUtil.loadCameraBitmap(this, "head_tmp.jpg");
+            if (avatar != null) {
+                user.setImageBitmap(avatar);
+            }
+        }
     }
 
     private void initData() {
@@ -92,10 +103,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getStores(null, null, null);
         //请求所有卡的数据
         getCardDetails(null, null, null, null, null);
-        Bitmap avatar = ImageSaveUtil.loadCameraBitmap(this, "head_tmp.jpg");
-        if (avatar != null) {
-            user.setImageBitmap(avatar);
-        }
     }
 
     private void addAdapter() {
