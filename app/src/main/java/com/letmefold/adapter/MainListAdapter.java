@@ -1,6 +1,7 @@
 package com.letmefold.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
@@ -39,7 +40,6 @@ public class MainListAdapter extends BaseAdapter implements View.OnClickListener
     private String userId;
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
     private int index = -1;
-    private int mColumnNum;
 
     public MainListAdapter(Context mContext,
                            List<CardDetail> data,
@@ -53,11 +53,12 @@ public class MainListAdapter extends BaseAdapter implements View.OnClickListener
         this.mResource = resource;
         this.mTo = to;
         this.userId = userId;
-        mColumnNum = titles.length;
-        for (int i = 0; i < mColumnNum; i++) {
+        for (String title : titles) {
             View titleView = LayoutInflater.from(mContext).inflate(R.layout.simple_text_item, null);
-            TextView title = (TextView) titleView.findViewById(R.id.text);
-            title.setText(titles[i]);
+            TextView tv = (TextView) titleView.findViewById(R.id.text);
+            tv.setText(title);
+            tv.getPaint().setFakeBoldText(true);
+            tv.setTextColor(Color.rgb(63, 81, 181));
             titleLayout.addView(titleView,
                     new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
@@ -94,6 +95,7 @@ public class MainListAdapter extends BaseAdapter implements View.OnClickListener
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder holder;
+        LinearLayout root;
         if (view == null) {
             holder = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(mResource, viewGroup, false);
@@ -116,6 +118,19 @@ public class MainListAdapter extends BaseAdapter implements View.OnClickListener
         holder.time.setText(sdf.format(data.get(i).getIssueTime()));
         holder.lease.setOnClickListener(this);
         index = i;
+        // 清空行
+        root = (LinearLayout) view.findViewById(R.id.list_row_root);
+        if (root != null) {
+            root.removeAllViews();
+            // 将每个元素添加到行布局中去
+            root.addView(holder.sname, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+            root.addView(holder.location, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+            root.addView(holder.scope, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+            root.addView(holder.version, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+            root.addView(holder.grade, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+            root.addView(holder.time, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            root.addView(holder.lease, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        }
         //此处需要返回view 不能是view中某一个
         return view;
     }

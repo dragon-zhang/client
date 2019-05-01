@@ -5,7 +5,7 @@
         android:background="@android:color/background_light"
         android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
     <com.qmuiteam.qmui.widget.QMUIRadiusImageView
@@ -81,10 +81,11 @@
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"/>
-            <com.qmuiteam.qmui.widget.QMUIWrapContentListView
+            <ListView
                     android:id="@+id/cards"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"/>
         </LinearLayout>
     </HorizontalScrollView>
 </RelativeLayout>

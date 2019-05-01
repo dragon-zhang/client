@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+        android:id="@+id/list_row_root"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +17,6 @@
             android:paddingLeft="?attr/qmui_content_padding_horizontal"
             android:paddingRight="?attr/qmui_content_padding_horizontal"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            android:background="?attr/qmui_s_list_item_bg_with_border_bottom_inset_left"
             android:textSize="12sp"
             android:text="店铺名"/>
 
@@ -29,7 +29,6 @@
             android:paddingLeft="?attr/qmui_content_padding_horizontal"
             android:paddingRight="?attr/qmui_content_padding_horizontal"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            android:background="?attr/qmui_s_list_item_bg_with_border_bottom_inset_left"
             android:textSize="12sp"
             android:text="店铺地点"/>
 
@@ -42,7 +41,6 @@
             android:paddingLeft="?attr/qmui_content_padding_horizontal"
             android:paddingRight="?attr/qmui_content_padding_horizontal"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            android:background="?attr/qmui_s_list_item_bg_with_border_bottom_inset_left"
             android:textSize="12sp"
             android:text="经营范围"/>
 
@@ -55,7 +53,6 @@
             android:paddingLeft="?attr/qmui_content_padding_horizontal"
             android:paddingRight="?attr/qmui_content_padding_horizontal"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            android:background="?attr/qmui_s_list_item_bg_with_border_bottom_inset_left"
             android:textSize="12sp"
             android:text="发行版本"/>
 
@@ -68,7 +65,6 @@
             android:paddingLeft="?attr/qmui_content_padding_horizontal"
             android:paddingRight="?attr/qmui_content_padding_horizontal"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            android:background="?attr/qmui_s_list_item_bg_with_border_bottom_inset_left"
             android:textSize="12sp"
             android:text="发行卡等级"/>
 
@@ -80,7 +76,6 @@
             android:paddingLeft="?attr/qmui_content_padding_horizontal"
             android:paddingRight="?attr/qmui_content_padding_horizontal"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            android:background="?attr/qmui_s_list_item_bg_with_border_bottom_inset_left"
             android:textSize="12sp"
             android:text="发行时间"/>
 
@@ -91,8 +86,6 @@
             android:gravity="center_vertical"
             android:paddingLeft="?attr/qmui_content_padding_horizontal"
             android:paddingRight="?attr/qmui_content_padding_horizontal"
-            android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            android:background="?attr/qmui_s_list_item_bg_with_border_bottom_inset_left"
             android:theme="@style/Theme_NoTitle"
             android:clickable="false"
             android:textSize="12sp"

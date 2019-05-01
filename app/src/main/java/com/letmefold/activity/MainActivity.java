@@ -34,7 +34,6 @@ import com.okgo.callback.StringCallback;
 import com.okgo.model.Response;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
-import com.qmuiteam.qmui.widget.QMUIWrapContentListView;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.zxing.activity.CaptureActivity;
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private QMUIRadiusImageView scan;
     private GridView option;
     private QMUIRadiusImageView user;
-    private QMUIWrapContentListView listView;
+    private ListView listView;
     private LinearLayout titleLayout;
     private MyGridPopup myGridPopup;
 
@@ -275,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     new int[]{R.id.sname, R.id.location, R.id.scope, R.id.version, R.id.grade, R.id.time, R.id.lease},
                                     userInfo.getString("id"),
                                     titleLayout,
-                                    new String[]{"店铺名称", "店铺位置", "经营范围", "发行版本", "卡等级", "发行时间"});
+                                    new String[]{"店铺名称", "店铺位置", "经营范围", "发行版本", "卡等级", "发行时间", "租卡"});
                             listView.setAdapter(adapter);
 
                             if (cards == null) {
@@ -299,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         scan = (QMUIRadiusImageView) findViewById(R.id.scan);
         option = (GridView) findViewById(R.id.option);
         user = (QMUIRadiusImageView) findViewById(R.id.user);
-        listView = (QMUIWrapContentListView) findViewById(R.id.cards);
+        listView = (ListView) findViewById(R.id.cards);
         titleLayout = (LinearLayout) findViewById(R.id.titleLayout);
     }
 
