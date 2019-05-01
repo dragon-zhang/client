@@ -126,6 +126,10 @@ public class CommodityShelvesActivity extends AppCompatActivity implements View.
     }
 
     private void chooseStore() {
+        if (storeNames.isEmpty()) {
+            Toast.makeText(CommodityShelvesActivity.this, "请先登记至少一个实体店", Toast.LENGTH_LONG).show();
+            finish();
+        }
         if (dialog == null) {
             dialog = new QMUIDialog.MenuDialogBuilder(CommodityShelvesActivity.this)
                     .setTitle("选择您的商店")

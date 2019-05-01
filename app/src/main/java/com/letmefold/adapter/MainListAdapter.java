@@ -53,15 +53,18 @@ public class MainListAdapter extends BaseAdapter implements View.OnClickListener
         this.mResource = resource;
         this.mTo = to;
         this.userId = userId;
-        for (String title : titles) {
-            View titleView = LayoutInflater.from(mContext).inflate(R.layout.simple_text_item, null);
-            TextView tv = (TextView) titleView.findViewById(R.id.text);
-            tv.setText(title);
-            tv.getPaint().setFakeBoldText(true);
-            tv.setTextColor(Color.rgb(63, 81, 181));
-            titleLayout.addView(titleView,
-                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+        if (titleLayout != null) {
+            titleLayout.removeAllViews();
+            for (String title : titles) {
+                View titleView = LayoutInflater.from(mContext).inflate(R.layout.simple_text_item, null);
+                TextView tv = (TextView) titleView.findViewById(R.id.text);
+                tv.setText(title);
+                tv.getPaint().setFakeBoldText(true);
+                tv.setTextColor(Color.rgb(63, 81, 181));
+                titleLayout.addView(titleView,
+                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+            }
         }
     }
 
