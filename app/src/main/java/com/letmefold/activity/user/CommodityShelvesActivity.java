@@ -163,24 +163,23 @@ public class CommodityShelvesActivity extends AppCompatActivity implements View.
                 startActivityForResult(intent, Config.REQ_QR_CODE);
             }
         } else if (sure == v) {
-            JSONObject json = new JSONObject();
             if ("确认\n上架".equals(action)) {
                 if (index == -1) {
                     Toast.makeText(CommodityShelvesActivity.this, "请指定上架到哪个商店", Toast.LENGTH_SHORT).show();
                     chooseStore();
                 } else {
-                    json.put("storeId", stores.get(index).getId());
-                    //todo 接口未完成,上货
-                    json.put("goods", "");
-                    OkGo.<String>post("http://" + IP_AND_PORT + "/rest/v1/xxx")
+                    OkGo.<String>post("http://" + IP_AND_PORT + "/rest/v1/entity/" + stores.get(index).getId() + "/upperShelf")
                             .tag(this)
-                            .upJson(json.toJSONString())
+                            .upJson(JSON.toJSONString(entities))
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
-                                    JSONObject body = JSON.parseObject(response.body());
-                                    if (body != null) {
-
+                                    JSONObject result = JSON.parseObject(response.body());
+                                    if ("OK".equals(result.getString("msg"))) {
+                                        Toast.makeText(CommodityShelvesActivity.this, "上架成功", Toast.LENGTH_SHORT).show();
+                                        Intent resultIntent = new Intent();
+                                        CommodityShelvesActivity.this.setResult(RESULT_OK, resultIntent);
+                                        CommodityShelvesActivity.this.finish();
                                     }
                                 }
 
