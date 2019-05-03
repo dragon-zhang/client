@@ -25,6 +25,7 @@ import com.letmefold.activity.user.StoreRegisterActivity;
 import com.letmefold.adapter.MainListAdapter;
 import com.letmefold.pojo.Card;
 import com.letmefold.pojo.CardDetail;
+import com.letmefold.pojo.LeasedCardVO;
 import com.letmefold.pojo.Store;
 import com.letmefold.utils.ImageSaveUtil;
 import com.letmefold.utils.Util;
@@ -34,6 +35,7 @@ import com.okgo.callback.StringCallback;
 import com.okgo.model.Response;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
+import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.zxing.activity.CaptureActivity;
@@ -67,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Set<String> scopes = new HashSet<>();
     private Set<String> versions = new HashSet<>();
     private Set<String> grades = new HashSet<>();
+
+    private List<LeasedCardVO> leasedCards;
+    private QMUIBottomSheet.BottomListSheetBuilder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -367,8 +372,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (bundle != null) {
                 scanResult = bundle.getString(Config.INTENT_EXTRA_KEY_QR_SCAN);
             }
-            //将扫描出的信息显示出来
-            Toast.makeText(MainActivity.this, scanResult, Toast.LENGTH_LONG).show();
+            if (scanResult != null) {
+                //将扫描出的信息显示出来
+                final String pay = scanResult.substring(scanResult.indexOf("-") + 1);
+                Toast.makeText(MainActivity.this, "原价:" + pay, Toast.LENGTH_LONG).show();
+                builder = new QMUIBottomSheet.BottomListSheetBuilder(MainActivity.this)
+                        .setOnSheetItemClickListener(new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
+                            @Override
+                            public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
+                                dialog.dismiss();
+                                String msg;
+                                if (position < leasedCards.size()) {
+                                    msg = "使用 " + leasedCards.get(position).getCard().getGrade() + " 卡";
+                                } else {
+                                    msg = "我是土豪,不用卡";
+                                }
+                                msg = msg + ",支付" + pay + "元";
+                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                //查询用户已租的卡
+                OkGo.<String>get("http://" + IP_AND_PORT + "/rest/v1/leasedcard/query?tenantId=" + userInfo.getString("id"))
+                        .tag(this)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(com.okgo.model.Response<String> response) {
+                                JSONObject result = JSONObject.parseObject(response.body());
+                                if ("OK".equals(result.getString("msg"))) {
+                                    leasedCards = JSONObject.parseArray(result.getString("data"), LeasedCardVO.class);
+                                    for (LeasedCardVO leasedCard : leasedCards) {
+                                        builder.addItem(leasedCard.getCard().getGrade());
+                                    }
+                                }
+                                builder.addItem("我是土豪,不用卡");
+                                builder.build().show();
+                            }
+
+                            @Override
+                            public void onError(Response<String> response) {
+                                JSONObject jsonObject = JSON.parseObject(response.body());
+                                Toast.makeText(MainActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
         } else if (requestCode == Config.RE_INIT_DATA && resultCode == RESULT_OK) {
             //需要重新请求数据
             initData();
