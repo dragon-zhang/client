@@ -82,7 +82,7 @@
     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
             android:id="@+id/lease"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:theme="@style/Theme_NoTitle"
             android:clickable="false"
