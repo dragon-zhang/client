@@ -7,10 +7,7 @@ import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.letmefold.R;
@@ -40,32 +37,60 @@ public class MainListAdapter extends BaseAdapter implements View.OnClickListener
     private String userId;
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
     private int index = -1;
+    private int maxWidth = 0;
 
     public MainListAdapter(Context mContext,
                            List<CardDetail> data,
                            @LayoutRes int resource,
                            @IdRes int[] to,
-                           String userId,
-                           LinearLayout titleLayout,
-                           String[] titles) {
+                           String userId) {
         this.mContext = mContext;
         this.data = data;
         this.mResource = resource;
         this.mTo = to;
         this.userId = userId;
+    }
+
+    public void measureMaxWidth(ListView listView) {
+        int maxWidth = 550;
+        if (listView.getAdapter() == null) {
+            this.maxWidth = 0;
+        }
+        int count = data.size();
+        View view;
+        for (int i = 0; i < count; i++) {
+            view = this.getView(i, null, listView);
+            view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            if (view.getMeasuredWidth() > maxWidth) {
+                maxWidth = view.getMeasuredWidth();
+            }
+        }
+        if (mContext.getResources().getDisplayMetrics().widthPixels < maxWidth) {
+            this.maxWidth = mContext.getResources().getDisplayMetrics().widthPixels - 50;
+        }
+        this.maxWidth = maxWidth;
+    }
+
+    public void addTitles(LinearLayout titleLayout, String[] titles) {
         if (titleLayout != null) {
             titleLayout.removeAllViews();
             for (String title : titles) {
                 View titleView = LayoutInflater.from(mContext).inflate(R.layout.simple_text_item, null);
                 TextView tv = (TextView) titleView.findViewById(R.id.text);
-                tv.setText(title);
-                tv.getPaint().setFakeBoldText(true);
-                tv.setTextColor(Color.rgb(63, 81, 181));
+                setText(tv, title);
                 titleLayout.addView(titleView,
-                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+                        new LinearLayout.LayoutParams(maxWidth / titles.length,
+                                LinearLayout.LayoutParams.MATCH_PARENT));
             }
+
         }
+    }
+
+    private void setText(TextView tv, String text) {
+        tv.setText(text);
+        tv.getPaint().setFakeBoldText(true);
+        tv.setTextColor(Color.rgb(63, 81, 181));
     }
 
     /**
@@ -131,8 +156,8 @@ public class MainListAdapter extends BaseAdapter implements View.OnClickListener
             root.addView(holder.scope, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
             root.addView(holder.version, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
             root.addView(holder.grade, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-            root.addView(holder.time, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            root.addView(holder.lease, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            root.addView(holder.time, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+            root.addView(holder.lease, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
         }
         //此处需要返回view 不能是view中某一个
         return view;

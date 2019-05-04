@@ -277,10 +277,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             MainListAdapter adapter = new MainListAdapter(MainActivity.this, cardDetails,
                                     R.layout.activity_main_list_item,
                                     new int[]{R.id.sname, R.id.location, R.id.scope, R.id.version, R.id.grade, R.id.time, R.id.lease},
-                                    userInfo.getString("id"),
-                                    titleLayout,
-                                    new String[]{"店铺名称", "店铺位置", "经营范围", "发行版本", "卡等级", "发行时间", "租卡"});
+                                    userInfo.getString("id"));
                             listView.setAdapter(adapter);
+                            adapter.measureMaxWidth(listView);
+                            adapter.addTitles(titleLayout, new String[]{"店铺名称", "店铺位置", "经营范围", "发行版本", "卡等级", "发行时间", "租卡"});
 
                             if (cards == null) {
                                 cards = new ArrayList<>();
