@@ -1,7 +1,6 @@
 package com.letmefold.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -26,17 +25,20 @@ public class QRCodeAdapter extends BaseAdapter {
     private int[] mTo;
     private Context mContext;
     private String storeId;
+    private String alipayUrl;
 
     public QRCodeAdapter(Context mContext,
                          String price,
                          @LayoutRes int resource,
                          @IdRes int[] to,
-                         String storeId) {
+                         String storeId,
+                         String alipayUrl) {
         this.mContext = mContext;
         this.price = price;
         this.mResource = resource;
         this.mTo = to;
         this.storeId = storeId;
+        this.alipayUrl = alipayUrl;
     }
 
     /**
@@ -44,7 +46,7 @@ public class QRCodeAdapter extends BaseAdapter {
      */
     @Override
     public int getCount() {
-        return 1;
+        return 2;
     }
 
     /**
@@ -73,6 +75,7 @@ public class QRCodeAdapter extends BaseAdapter {
             holder = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(mResource, viewGroup, false);
             holder.qrCode = (QMUIRadiusImageView) view.findViewById(mTo[0]);
+            holder.alipayQrCode = (QMUIRadiusImageView) view.findViewById(mTo[1]);
             //holder.barCode = (QMUIRadiusImageView) view.findViewById(R.id.bar_code);
             view.setTag(holder);
         } else {
@@ -80,10 +83,12 @@ public class QRCodeAdapter extends BaseAdapter {
         }
         try {
             //生成二维码
-            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.logo_square);
             holder.qrCode.setImageBitmap(QRCodeUtil.createQRCodeBitmapWithImage(storeId + "-" + price, 300, 300, "2",
                     "utf-8", "H",
-                    bitmap, 50));
+                    BitmapFactory.decodeResource(getContext().getResources(), R.drawable.logo_square), 50));
+            holder.alipayQrCode.setImageBitmap(QRCodeUtil.createQRCodeBitmapWithImage(alipayUrl, 300, 300, "2",
+                    "utf-8", "H",
+                    BitmapFactory.decodeResource(getContext().getResources(), R.drawable.alipay_square), 50));
             //生成条形码
             //barCode.setImageBitmap(BarCodeUtil.createBarCodeBitmap("012345678912", 320, 80, true));
         } catch (WriterException e) {
@@ -95,6 +100,7 @@ public class QRCodeAdapter extends BaseAdapter {
 
     private class ViewHolder {
         private QMUIRadiusImageView qrCode;
+        private QMUIRadiusImageView alipayQrCode;
         //private QMUIRadiusImageView barCode;
     }
 }

@@ -6,12 +6,12 @@
         android:layout_height="wrap_content"
         android:background="@android:color/background_light"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="horizontal">
     <com.qmuiteam.qmui.widget.QMUIRadiusImageView
             android:id="@+id/qr_code"
             android:clickable="true"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
             android:src="@drawable/qr_code_example"
             app:qmui_border_color="?attr/qmui_config_color_gray_6"
             app:qmui_border_width="1px"
@@ -20,11 +20,23 @@
             app:qmui_selected_border_width="1px"
             app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8"/>
     <TextView
-            android:id="@+id/qr_result"
-            android:layout_width="wrap_content"
+            android:layout_width="18dp"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="扫描结果"/>
+            android:text="随处购扫左，支付宝扫右"
+            android:textSize="10sp"
+            android:gravity="center"/>
+    <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+            android:id="@+id/alipay_qr_code"
+            android:clickable="true"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
+            android:src="@drawable/qr_code_example"
+            app:qmui_border_color="?attr/qmui_config_color_gray_6"
+            app:qmui_border_width="1px"
+            app:qmui_corner_radius="15dp"
+            app:qmui_selected_border_color="?attr/qmui_config_color_gray_4"
+            app:qmui_selected_border_width="1px"
+            app:qmui_selected_mask_color="?attr/qmui_config_color_gray_8"/>
     <com.qmuiteam.qmui.widget.QMUIRadiusImageView
             android:id="@+id/bar_code"
             android:visibility="gone"

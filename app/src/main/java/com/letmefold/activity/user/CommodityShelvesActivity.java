@@ -195,15 +195,17 @@ public class CommodityShelvesActivity extends AppCompatActivity implements View.
                     Toast.makeText(CommodityShelvesActivity.this, "请指定您在哪个商店出售的该商品", Toast.LENGTH_SHORT).show();
                     chooseStore();
                 } else {
+                    //实际办理支付宝付款需要营业执照，故无法办理
                     QRCodeAdapter qrCodeAdapter = new QRCodeAdapter(
                             CommodityShelvesActivity.this,
                             adapter.getCountPrice(),
                             R.layout.activity_commodity_shelves_qr_code,
-                            new int[]{R.id.qr_code},
-                            stores.get(index).getId());
+                            new int[]{R.id.qr_code, R.id.alipay_qr_code},
+                            stores.get(index).getId(),
+                            "https://www.baidu.com/");
                     myGridPopup = new MyGridPopup(CommodityShelvesActivity.this, QMUIPopup.DIRECTION_BOTTOM, qrCodeAdapter, 1);
-                    myGridPopup.create(QMUIDisplayHelper.dp2px(CommodityShelvesActivity.this, 300),
-                            QMUIDisplayHelper.dp2px(CommodityShelvesActivity.this, 300), new AdapterView.OnItemClickListener() {
+                    myGridPopup.create(QMUIDisplayHelper.dp2px(CommodityShelvesActivity.this, 375),
+                            QMUIDisplayHelper.dp2px(CommodityShelvesActivity.this, 175), new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     myGridPopup.dismiss();

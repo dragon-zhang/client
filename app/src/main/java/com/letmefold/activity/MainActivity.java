@@ -204,7 +204,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final List<String> data = new ArrayList<>(setData);
         ArrayAdapter adapter = new ArrayAdapter<>(MainActivity.this, R.layout.simple_text_item, data);
         myGridPopup = new MyGridPopup(MainActivity.this, QMUIPopup.DIRECTION_NONE, adapter, 2);
-        myGridPopup.create(QMUIDisplayHelper.dp2px(MainActivity.this, 250), QMUIDisplayHelper.dp2px(MainActivity.this, 200), new AdapterView.OnItemClickListener() {
+        myGridPopup.create(QMUIDisplayHelper.dp2px(MainActivity.this, 250),
+                QMUIDisplayHelper.dp2px(MainActivity.this, 200), new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String param = data.get(i);
