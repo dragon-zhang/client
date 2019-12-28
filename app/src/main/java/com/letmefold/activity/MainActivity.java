@@ -40,6 +40,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.zxing.activity.CaptureActivity;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import static com.letmefold.Config.IP_AND_PORT;
@@ -206,38 +207,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         myGridPopup = new MyGridPopup(MainActivity.this, QMUIPopup.DIRECTION_NONE, adapter, 2);
         myGridPopup.create(QMUIDisplayHelper.dp2px(MainActivity.this, 250),
                 QMUIDisplayHelper.dp2px(MainActivity.this, 200), new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String param = data.get(i);
-                Toast.makeText(MainActivity.this, param, Toast.LENGTH_SHORT).show();
-                switch (position) {
-                    case 0:
-                        params.put("location", param);
-                        break;
-                    case 1:
-                        params.put("sname", param);
-                        break;
-                    case 2:
-                        params.put("scope", param);
-                        break;
-                    case 3:
-                        params.put("version", param);
-                        break;
-                    case 4:
-                        params.put("grade", param);
-                        break;
-                    default:
-                        break;
-                }
-                if (position < 3) {
-                    getStores(params.get("location"), params.get("sname"), params.get("scope"));
-                } else {
-                    getCards(params.get("version"), params.get("grade"));
-                }
-                getCardDetails(params.get("location"), params.get("sname"), params.get("scope"), params.get("version"), params.get("grade"));
-                myGridPopup.dismiss();
-            }
-        });
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        String param = data.get(i);
+                        Toast.makeText(MainActivity.this, param, Toast.LENGTH_SHORT).show();
+                        switch (position) {
+                            case 0:
+                                params.put("location", param);
+                                break;
+                            case 1:
+                                params.put("sname", param);
+                                break;
+                            case 2:
+                                params.put("scope", param);
+                                break;
+                            case 3:
+                                params.put("version", param);
+                                break;
+                            case 4:
+                                params.put("grade", param);
+                                break;
+                            default:
+                                break;
+                        }
+                        if (position < 3) {
+                            getStores(params.get("location"), params.get("sname"), params.get("scope"));
+                        } else {
+                            getCards(params.get("version"), params.get("grade"));
+                        }
+                        getCardDetails(params.get("location"), params.get("sname"), params.get("scope"), params.get("version"), params.get("grade"));
+                        myGridPopup.dismiss();
+                    }
+                });
     }
 
     private void getCardDetails(String location, String sname, String scope, String version, String grade) {
@@ -388,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 } else {
                                     msg = "我是土豪,不用卡";
                                 }
-                                msg = msg + ",支付" + pay + "元";
+                                msg = msg + ",支付" + round(Double.valueOf(pay) * 0.9, 2) + "元";
                                 Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -420,6 +421,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //需要重新请求数据
             initData();
         }
+    }
+
+    /**
+     * 四舍五入
+     *
+     * @param original 原始数据
+     * @param digit    需要四舍五入的位数
+     * @return 四舍五入后的数(可能有小数)
+     */
+    public static double round(double original, int digit) {
+        return new BigDecimal(original).setScale(digit, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     @Override
